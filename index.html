@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mission Waldboden – Pilze & Bodentiere | Biologie Jg. 7</title>
+<style>
+:root{
+  --bg:#fbf7ee; --card:#ffffff; --ink:#2b2a26; --ink2:#5b5850; --muted:#8a867b;
+  --moss:#3f7d3a; --moss-l:#e3f0d9; --leaf:#e8902c; --leaf-l:#fdebd3;
+  --shroom:#d6453d; --shroom-l:#fbe1de; --earth:#7a5236; --earth-l:#efe2d4;
+  --sky:#2a78d6; --sky-l:#ddeafb; --star:#f2b705; --star-l:#fff4cc;
+  --line:#e6dfcf; --radius:18px;
+  --font: ui-rounded, "SF Pro Rounded", "Arial Rounded MT Bold", "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:18px;line-height:1.5;
+  background-image:radial-gradient(circle at 10% 0%, #f3ead3 0, transparent 40%),radial-gradient(circle at 90% 100%, #e7efd9 0, transparent 40%);background-attachment:fixed}
+h1,h2,h3{line-height:1.2;margin:0 0 .5em}
+h2{font-size:1.7rem}
+h3{font-size:1.2rem}
+a{color:var(--sky)}
+button{font-family:inherit;font-size:1rem;cursor:pointer}
+.wrap{max-width:1040px;margin:0 auto;padding:0 18px}
+
+/* Header + Nav */
+header.top{background:linear-gradient(135deg,#2f5f2b,#4f8b3f 55%,#7a9b3a);color:#fff;padding:26px 0 70px;position:relative;overflow:hidden}
+header.top h1{font-size:2.2rem;margin:0}
+header.top p{margin:.3em 0 0;opacity:.95}
+.badge-jg{display:inline-block;background:rgba(255,255,255,.2);border-radius:99px;padding:3px 12px;font-size:.85rem;margin-bottom:8px}
+.falling{position:absolute;inset:0;pointer-events:none}
+.falling span{position:absolute;top:-40px;font-size:26px;animation:fall linear infinite}
+@keyframes fall{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(260px) rotate(360deg);opacity:.2}}
+nav.tabs{position:sticky;top:0;z-index:20;margin-top:-50px}
+nav.tabs .wrap{display:flex;gap:8px;overflow-x:auto;padding-bottom:10px;padding-top:6px;scrollbar-width:none}
+nav.tabs button{flex:0 0 auto;border:0;background:#fff;color:var(--ink);padding:10px 16px;border-radius:99px;box-shadow:0 3px 10px rgba(0,0,0,.12);font-weight:700;display:flex;align-items:center;gap:6px}
+nav.tabs button.active{background:var(--ink);color:#fff}
+nav.tabs .mini{display:inline-block;width:34px;height:6px;border-radius:9px;background:#e8e2d2;overflow:hidden}
+nav.tabs .mini i{display:block;height:100%;background:var(--moss);width:0;transition:width .4s}
+nav.tabs button.active .mini{background:#555}
+
+section.page{display:none;padding:24px 0 40px;animation:pop .35s ease}
+section.page.show{display:block}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.hero-card{background:var(--card);border-radius:24px;padding:24px;box-shadow:0 6px 24px rgba(60,50,20,.08);margin-bottom:22px;border:2px solid var(--line)}
+.mission-head{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.mission-head .big{font-size:3.2rem;line-height:1}
+.mission-head .lf{font-style:italic;color:var(--ink2)}
+.pill{display:inline-block;border-radius:99px;padding:2px 10px;font-size:.8rem;font-weight:700;background:var(--moss-l);color:var(--moss)}
+.progress{height:12px;border-radius:9px;background:#efe9da;overflow:hidden;margin-top:10px}
+.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--moss),#8cc152);transition:width .5s}
+
+.task{background:var(--card);border-radius:var(--radius);padding:20px 22px;margin:18px 0;box-shadow:0 4px 16px rgba(60,50,20,.06);border:2px solid var(--line);position:relative}
+.task.done{border-color:#9fcf8a}
+.task.done::after{content:"✓";position:absolute;right:-10px;top:-10px;background:var(--moss);color:#fff;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:800;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.task > header{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.task > header h3{margin:0;flex:1 1 240px}
+.tnum{background:var(--ink);color:#fff;border-radius:12px;padding:4px 10px;font-weight:800}
+.tag{font-size:.8rem;border-radius:99px;padding:3px 10px;background:#f1ecdf;color:var(--ink2);font-weight:700;white-space:nowrap}
+.tag.kreativ{background:#efe1fb;color:#6a3fa0}
+.tag.forsch{background:var(--sky-l);color:#1c5cab}
+.tag.duo{background:var(--leaf-l);color:#a65a10}
+.task.star{background:linear-gradient(180deg,#fffaf0,#fff);border-color:#f3d77a}
+.task.star .tnum{background:var(--star);color:#3b2f00}
+
+.heft{background:repeating-linear-gradient(#fff,#fff 27px,#dfe8f5 28px);border-left:6px solid #e46a6a;border-radius:10px;padding:10px 14px;margin:14px 0;box-shadow:inset 0 0 0 1px #e3e3e3}
+.heft b:first-child{color:#c43d3d}
+.role{background:var(--leaf-l);border-radius:12px;padding:8px 12px;margin:10px 0;font-size:.95rem}
+details{border-radius:12px;margin:8px 0;background:#f7f4ec;border:1px solid var(--line)}
+details summary{padding:10px 14px;cursor:pointer;font-weight:700;list-style:none}
+details summary::-webkit-details-marker{display:none}
+details summary::before{content:"▸ ";display:inline-block;transition:transform .2s}
+details[open] summary::before{transform:rotate(90deg)}
+details > div{padding:0 14px 12px}
+details.hint{background:var(--star-l);border-color:#f3dd8a}
+details.sol{background:var(--moss-l);border-color:#bfdcae}
+details.sol summary{color:var(--moss)}
+.done-btn{margin-top:10px;border:2px solid var(--moss);background:#fff;color:var(--moss);padding:8px 16px;border-radius:99px;font-weight:800}
+.task.done .done-btn{background:var(--moss);color:#fff}
+.btn{border:0;background:var(--ink);color:#fff;padding:9px 16px;border-radius:99px;font-weight:700}
+.btn.light{background:#efe9da;color:var(--ink)}
+.btn.green{background:var(--moss)}
+.btn.orange{background:var(--leaf)}
+.btn.blue{background:var(--sky)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.note{font-size:.88rem;color:var(--muted)}
+.warn{background:var(--shroom-l);border-radius:12px;padding:10px 14px;border-left:6px solid var(--shroom);margin:10px 0}
+.legend-icons{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px 16px;font-size:.95rem}
+.stage{background:#fdfbf6;border-radius:16px;border:2px dashed var(--line);padding:10px;margin:10px 0}
+.stage svg{width:100%;height:auto;display:block;touch-action:manipulation}
+input[type=range]{width:100%;accent-color:var(--moss);height:30px}
+.stage-text{min-height:3em;background:#fff;border-radius:12px;padding:8px 12px;margin-top:6px;font-weight:600}
+.kbd{display:inline-block;background:#fff;border:1px solid #ccc;border-bottom-width:3px;border-radius:6px;padding:0 6px;font-size:.85em}
+
+/* Merkmal-Tabelle */
+table.sort{width:100%;border-collapse:separate;border-spacing:0 6px}
+table.sort th{font-size:.95rem;padding:6px}
+table.sort td{background:#faf7f0;padding:8px 10px}
+table.sort td:first-child{border-radius:12px 0 0 12px;font-weight:600}
+table.sort td:last-child{border-radius:0 12px 12px 0}
+.tog{width:48px;height:42px;border-radius:12px;border:2px solid #d9d2c0;background:#fff;font-size:1.2rem}
+.tog.on{background:var(--moss);border-color:var(--moss);color:#fff}
+tr.ok td{background:#e3f4da}
+tr.bad td{background:#fde3e0}
+
+/* Karten */
+.flip{perspective:900px;height:300px;cursor:pointer}
+.flip-in{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}
+.flip.on .flip-in{transform:rotateY(180deg)}
+.flip-f,.flip-b{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:18px;padding:14px;border:2px solid var(--line);background:#fff;display:flex;flex-direction:column}
+.flip-f svg{flex:1;width:100%}
+.flip-f b{text-align:center;font-size:1.1rem}
+.flip-b{transform:rotateY(180deg);background:var(--earth-l);font-size:.92rem}
+.flip-b b{font-size:1.05rem}
+.choice-card{background:#fff;border:2px solid var(--line);border-radius:16px;padding:14px;margin:10px 0}
+.choice-card .opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.opt{border:2px solid #d9d2c0;background:#fff;border-radius:99px;padding:7px 14px;font-weight:700}
+.opt.right{background:#d9f0cc;border-color:var(--moss)}
+.opt.wrong{background:#fbd9d4;border-color:var(--shroom)}
+.fb{margin-top:8px;font-size:.95rem;min-height:1.2em}
+
+/* Chart */
+.chart{position:relative;background:#fcfcfb;border-radius:14px;padding:10px;border:1px solid var(--line)}
+.chart svg{width:100%;height:auto;display:block}
+.chart .tip{position:absolute;pointer-events:none;background:#fff;border:1px solid #ddd;border-radius:10px;padding:6px 10px;font-size:.85rem;box-shadow:0 4px 12px rgba(0,0,0,.12);display:none;white-space:nowrap;z-index:3}
+.chart .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.88rem;color:#52514e;margin:2px 4px 6px}
+.chart .legend span::before{content:"";display:inline-block;width:14px;height:4px;border-radius:2px;background:var(--c);vertical-align:middle;margin-right:6px}
+table.data{border-collapse:collapse;font-size:.9rem;margin-top:6px}
+table.data th,table.data td{border:1px solid #ddd;padding:4px 10px;text-align:right}
+table.data th:first-child,table.data td:first-child{text-align:left}
+
+/* Bestimmungsschlüssel */
+.key-box{background:#fff;border-radius:16px;border:2px solid var(--line);padding:16px;min-height:200px}
+.key-q{font-size:1.15rem;font-weight:700;margin-bottom:10px}
+.key-path{font-size:.85rem;color:var(--muted);margin-bottom:8px}
+.key-btns{display:flex;flex-wrap:wrap;gap:10px}
+.key-btns button{border:2px solid var(--sky);background:var(--sky-l);color:#174a8a;border-radius:14px;padding:10px 14px;font-weight:700;text-align:left}
+.key-res{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.key-res svg{width:200px;height:110px;background:#f3ead8;border-radius:12px}
+.lupe{display:flex;gap:14px;align-items:center;background:#f3ead8;border-radius:16px;padding:10px;min-height:130px}
+.lupe svg{width:260px;height:130px;background:radial-gradient(circle,#fff6e4,#e9d9bb);border-radius:50%/50%;border:6px solid #8a6a3f}
+table.idcheck{width:100%;border-collapse:collapse}
+table.idcheck td,table.idcheck th{padding:6px;border-bottom:1px solid var(--line);text-align:left}
+select{font-family:inherit;font-size:1rem;padding:6px 8px;border-radius:10px;border:2px solid #d9d2c0;background:#fff;max-width:100%}
+
+/* Puzzle */
+.puz{display:grid;gap:10px}
+.puz button{border:2px solid var(--line);background:#fff;border-radius:14px;padding:12px 14px;text-align:left;font-weight:600;display:flex;gap:12px;align-items:center}
+.puz button .n{flex:0 0 34px;height:34px;border-radius:50%;background:#efe9da;display:grid;place-items:center;font-weight:800}
+.puz button.sel .n{background:var(--leaf);color:#fff}
+.puz button.ok{border-color:var(--moss);background:#eaf6e2}
+.puz button.no{border-color:var(--shroom);background:#fdecea}
+
+/* Lernlandkarte */
+table.ll{width:100%;border-collapse:collapse}
+table.ll td,table.ll th{padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:middle}
+table.ll th{font-size:.85rem;color:var(--ink2);text-align:center}
+.smi{display:flex;gap:4px;justify-content:center}
+.smi button{border:2px solid transparent;background:#f3efe4;border-radius:10px;font-size:1.25rem;width:40px;height:40px;padding:0}
+.smi button.on{border-color:var(--ink);background:#fff}
+
+.quiz-q{background:#fff;border:2px solid var(--line);border-radius:16px;padding:14px 16px;margin:12px 0}
+.quiz-q .opts{display:grid;gap:8px;margin-top:8px}
+.quiz-q .opt{border-radius:12px;text-align:left}
+.score{font-size:1.4rem;font-weight:800;text-align:center;padding:16px;border-radius:16px;background:var(--star-l)}
+
+.badges{display:flex;gap:12px;flex-wrap:wrap}
+.bdg{width:86px;text-align:center;font-size:.75rem;color:var(--muted)}
+.bdg div{width:70px;height:70px;margin:0 auto 4px;border-radius:50%;display:grid;place-items:center;font-size:2rem;background:#eee;filter:grayscale(1);opacity:.45;transition:all .4s}
+.bdg.got div{filter:none;opacity:1;background:var(--star-l);box-shadow:0 0 0 4px var(--star)}
+.bdg.got{color:var(--ink)}
+
+footer{background:#2b2a26;color:#ddd;padding:24px 0;margin-top:40px;font-size:.9rem}
+footer button{background:none;border:0;color:#fff;text-decoration:underline;padding:0 10px 0 0}
+dialog{border:0;border-radius:20px;max-width:720px;width:92vw;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.35);font-size:.95rem}
+dialog::backdrop{background:rgba(0,0,0,.45)}
+dialog h2{font-size:1.4rem}
+dialog h3{font-size:1.05rem;margin-top:1.2em}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(120px);background:var(--ink);color:#fff;padding:12px 20px;border-radius:99px;font-weight:700;transition:transform .4s;z-index:50;visibility:hidden;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.toast.show{transform:translateX(-50%) translateY(0);visibility:visible}
+@media (max-width:600px){body{font-size:16px}header.top h1{font-size:1.6rem}.task{padding:16px}}
+@media print{nav.tabs,footer,.done-btn{display:none}section.page{display:block}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="falling" aria-hidden="true"></div>
+  <div class="wrap">
+    <span class="badge-jg">Biologie · Jahrgang 7 · Ökologie</span>
+    <h1>🍂 Mission Waldboden</h1>
+    <p>Das Rätsel vom verschwundenen Laub: Pilze & Bodentiere als Geheimagenten des Waldes</p>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="Missionen">
+  <div class="wrap" id="tabbar"></div>
+</nav>
+
+<main class="wrap">
+
+<!-- ================= START ================= -->
+<section class="page" id="start">
+  <div class="hero-card">
+    <div class="mission-head">
+      <div class="big">🕵️</div>
+      <div style="flex:1 1 300px">
+        <span class="pill">Euer Fall</span>
+        <h2>Warum wächst der Waldboden nicht jedes Jahr höher?</h2>
+        <p style="margin:0">Jeden Herbst fallen in einem Buchenwald auf <b>jeden Quadratmeter</b> etwa 300–400 g Laub. Das passiert seit tausenden Jahren. Trotzdem steht ihr im Wald nicht bis zum Hals im Laub. <b>Wo ist das ganze Laub hin?</b> Ihr seid das Ermittlungsteam, das diesen Fall löst.</p>
+      </div>
+    </div>
+  </div>
+
+  <article class="task" data-id="s1">
+    <header><span class="tnum">A0</span><h3>Gedankenexperiment: Wenn niemand aufräumt …</h3><span class="tag forsch">🔬 Forschen</span><span class="tag">⏱ 10 min</span></header>
+    <p>Stellt euch vor, das Laub würde <b>nie</b> verschwinden. Wir nehmen an, dass jedes Jahr eine lockere Schicht von etwa <b>3 cm</b> dazukommt. Bewegt den Regler.</p>
+    <div class="stage">
+      <svg id="stackSvg" viewBox="0 0 700 360" aria-label="Laubstapel-Simulation"></svg>
+      <input type="range" id="stackRange" min="0" max="200" value="0" aria-label="Jahre">
+      <div class="stage-text" id="stackText">Jahr 0: Der Waldboden ist frei.</div>
+    </div>
+    <p class="note">Gedankenexperiment mit einem Schätzwert. In echt sackt Laub zusammen, aber das Problem bleibt.</p>
+    <div class="heft"><b>✏️ Ins Heft:</b> Neue Überschrift <b>„Mission Waldboden: Warum wächst der Waldboden nicht höher?“</b>. Schreibt darunter <b>eure begründete Vermutung</b>: „Wir vermuten, dass …, weil …“. Rahmt die Vermutung farbig ein. Am Ende der Mission überprüft ihr sie!</div>
+    <details class="hint"><summary>💡 Hilfe: Was ist eine begründete Vermutung?</summary><div>Eine begründete Vermutung (Hypothese) ist mehr als Raten. Ihr nennt <b>was</b> ihr vermutet und <b>warum</b> – mit etwas, das ihr schon wisst oder beobachtet habt.<br>Beispiel aus einem anderen Thema: „Wir vermuten, dass die Pflanze am Fenster schneller wächst, <i>weil</i> Pflanzen Licht für die Fotosynthese brauchen.“</div></details>
+    <button class="done-btn">Erledigt ✓</button>
+  </article>
+
+  <div class="task">
+    <header><span class="tnum">ℹ️</span><h3>So arbeitet ihr</h3></header>
+    <div class="role">🧑‍🤝‍🧑 <b>Partnerarbeit mit Rollen:</b> <b>Pilot:in</b> bedient das iPad. <b>Navigator:in</b> liest die Aufgabe vor und achtet auf die Zeit. <b>Nach jeder Aufgabe tauscht ihr.</b> Beide schreiben ins eigene Heft.</div>
+    <div class="legend-icons">
+      <div>✏️ <b>Ins Heft</b>: das kommt ins Heft</div>
+      <div>💡 <b>Hilfe</b>: erst selbst probieren, dann aufklappen</div>
+      <div>✅ <b>Lösung</b>: erst nach dem Heft-Eintrag vergleichen</div>
+      <div>⭐ <b>Sternchen</b>: für Schnelle und Profis</div>
+      <div>🔬 <b>Forschen</b> · 🎨 <b>Kreativ</b> · 🗣️ <b>Austausch</b></div>
+      <div>✓ <b>Erledigt</b>: abhaken, dann sammelt ihr Abzeichen</div>
+    </div>
+    <p class="note" style="margin-top:12px">Euer Fortschritt wird nur auf diesem iPad gespeichert (ohne Namen). Ihr braucht kein Konto.</p>
+  </div>
+
+  <div class="task" id="llStartBox">
+    <header><span class="tnum">🗺️</span><h3>Lernlandkarte: Was kann ich schon?</h3><span class="tag">⏱ 5 min</span></header>
+    <p>Schätzt euch <b>jetzt am Anfang</b> ein (Spalte „Start“). Am Ende der Mission macht ihr das noch einmal in der Spalte „Ende“ und seht, was ihr dazugelernt habt.<br>😟 noch nicht · 🙂 teilweise · 😎 sicher</p>
+    <div id="llTable"></div>
+    <div class="heft"><b>✏️ Ins Heft:</b> Klebt oder schreibt die Liste „Ich kann …“ hinten ins Heft. So seht ihr jederzeit, wo ihr steht.</div>
+  </div>
+
+  <div class="task">
+    <header><span class="tnum">🏅</span><h3>Eure Abzeichen</h3></header>
+    <div class="badges" id="badges"></div>
+    <p style="margin-top:14px"><button class="btn green" data-go="m1">Los geht's: Mission 1 🍄</button></p>
+  </div>
+</section>
+
+<!-- ================= MISSION 1 ================= -->
+<section class="page" id="m1">
+  <div class="hero-card">
+    <div class="mission-head">
+      <div class="big">🍄</div>
+      <div style="flex:1 1 300px">
+        <span class="pill">Mission 1 · Doppelstunde 1</span>
+        <h2>Pflanze, Tier – oder ganz was anderes?</h2>
+        <div class="lf">Leitfrage: Wie unterscheiden sich Pilze von Pflanzen und Tieren?</div>
+        <div class="progress"><i data-prog="m1"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <article class="task" data-id="m1a1">
+    <header><span class="tnum">A1</span><h3>Blitz-Umfrage im Team</h3><span class="tag duo">🗣️ Austausch</span><span class="tag">⏱ 5 min</span></header>
+    <p>Im Biobuch alter Zeiten standen Pilze bei den <b>Pflanzen</b>. Heute sagen Biologen: „Pilze sind näher mit Tieren verwandt als mit Pflanzen!“</p>
+    <p><b>Denkt zuerst allein (1 min)</b>: Was spricht dafür, dass ein Pilz eine Pflanze ist? Was spricht dagegen? <b>Tauscht euch dann aus.</b></p>
+    <div class="heft"><b>✏️ Ins Heft:</b> Überschrift <b>„1 Pilze – ein eigenes Reich?“</b>. Darunter eine T-Tabelle: <i>Pilz ist wie eine Pflanze, weil …</i> | <i>Pilz ist nicht wie eine Pflanze, weil …</i> (je mind. 2 Ideen).</div>
+    <details class="hint"><summary>💡 Hilfe</summary><div>Denkt an: Farbe (grün?), wo und wie Pilze wachsen, ob sie sich bewegen, wovon sie sich ernähren …</div></details>
+    <button class="done-btn">Erledigt ✓</button>
+  </article>
+
+  <article class="task" data-id="m1a2">
+    <header><span class="tnum">A2</span><h3>Der große Merkmals-Check</h3><span class="tag forsch">🔬 Ordnen & Vergleichen</span><span class="tag">⏱ 15 min</span></header>
+    <p>Lest die Merkmale. Tippt an, für wen das Merkmal zutrifft. <b>Mehrere Kreuze pro Zeile sind möglich!</b> Diskutiert bei jeder Zeile, bevor ihr tippt. Dann prüft ihr.</p>
+    <div style="overflow-x:auto"><table class="sort" id="sortTable"></table></div>
+    <div class="row" style="margin-top:8px"><button class="btn green" id="sortCheck">Prüfen</button><button class="btn light" id="sortReset">Zurücksetzen</button></div>
+    <div class="fb" id="sortFb"></div>
+    <div class="heft"><b>✏️ Ins Heft:</b> Übertragt die Tabelle (Merkmal | 🌱 Pflanze | 🍄 Pilz | 🐞 Tier) mit Kreuzen. Schreibt darunter den <b>Merksatz</b>: „Pilze sind weder Pflanzen noch Tiere. Sie bilden ein eigenes Reich, weil …“ (mind. 3 Gründe).</div>
+    <details class="hint"><summary>💡 Hilfe 1: Fachwörter</summary><div><b>Chlorophyll</b> = grüner Farbstoff, mit dem Pflanzen Fotosynthese betreiben (aus Licht, Wasser und CO₂ Zucker herstellen).<br><b>Cellulose / Chitin</b> = Baustoffe für Zellwände. Chitin kennt ihr vom Panzer der Insekten.<br><b>Stärke / Glykogen</b> = Speicherstoffe für Zucker. Pflanzen speichern Stärke, Tiere Glykogen.</div></details>
+    <details class="hint"><summary>💡 Hilfe 2: Zählt die Gemeinsamkeiten</summary><div>Zählt: Wie viele Kreuze hat der Pilz gemeinsam mit der Pflanze? Wie viele mit dem Tier? Was fällt euch auf?</div></details>
+    <details class="sol"><summary>✅ Merksatz zum Vergleich</summary><div>Pilze sind ein eigenes Reich: Sie haben <b>kein Chlorophyll</b> und können keine Fotosynthese betreiben. Sie ernähren sich wie Tiere von <b>Stoffen anderer Lebewesen</b>, speichern wie Tiere <b>Glykogen</b> und haben Zellwände aus <b>Chitin</b>. Wie Pflanzen sind sie aber <b>ortsfest</b>.</div></details>
+    <button class="done-btn">Erledigt ✓</button>
+  </article>
+
+  <article class="task" data-id="m1a3">
+    <header><span class="tnum">A3</span><h3>Animation: Der geheime Pilz unter der Erde</h3><span class="tag forsch">🔬 Beobachten</span><span class="tag">⏱ 20 min</span></header>
+    <p>Was wir „Pilz“ nennen, ist nur ein kleiner Teil. Schiebt den Regler langsam von links nach rechts und beobachtet genau. <b>Pilot:in</b> schiebt, <b>Navigator:in</b> beschreibt laut, was passiert.</p>
+    <div class="stage">
+      <svg id="pilzSvg" viewBox="0 0 700 380" aria-label="Wachstum eines Pilzes"></svg>
+      <input type="range" id="pilzRange" min="0" max="100" value="0" aria-label="Zeit">
+      <div class="row"><label><input type="checkbox" id="pilzLabels"> Beschriftungen zeigen</label></div>
+      <div class="stage-text" id="pilzText"></div>
+    </div>
+    <div class="heft"><b>✏️ Ins Heft:</b> Zeichnet einen Pilz <b>mit</b> dem Teil unter der Erde (mind. ½ Seite, Bleistift). Beschriftet: <i>Fruchtkörper (Hut, Lamellen, Stiel), Myzel, Hyphen, Sporen</i>. Erklärt in 2 Sätzen, wozu der Fruchtkörper da ist.<br><span class="note">Tipp: Versucht es zuerst ohne Beschriftung in der Animation, dann kontrolliert ihr mit dem Häkchen.</span></div>
+    <details class="hint"><summary>💡 Hilfe: Satzanfänge</summary><div>„Aus einer Spore wächst …“ · „Viele Hyphen zusammen bilden …“ · „Der Fruchtkörper dient dazu, …“</div></details>
+    <details class="sol"><summary>✅ Lösung zum Vergleich</summary><div>Aus einer <b>Spore</b> wächst ein feiner Pilzfaden, die <b>Hyphe</b>. Viele verzweigte Hyphen bilden ein Geflecht im Boden, das <b>Myzel</b>. Das ist der eigentliche Pilz. Bei Feuchtigkeit und Wärme bildet das Myzel einen <b>Fruchtkörper</b> mit Stiel, Hut und Lamellen. An den Lamellen entstehen Millionen <b>Sporen</b>, die mit dem Wind verbreitet werden. Der Fruchtkörper dient also der <b>Fortpflanzung und Verbreitung</b>.</div></details>
+    <button class="done-btn">Erledigt ✓</button>
+  </article>
+
+  <article class="task" data-id="m1a4">
+    <header><span class="tnum">A4</span><h3>Absage vom „Club der Pflanzen“</h3><span class="tag kreativ">🎨 Kreativ</span><span class="tag">⏱ 15 min</span></header>
+    <p>Der Fliegenpilz Fred hat sich beim <b>„Club der Pflanzen“</b> beworben. Er möchte endlich dazugehören! Der Club muss ihm leider <b>absagen</b>. Schreibt den Absagebrief. Er soll freundlich und witzig sein, aber biologisch korrekt.</p>
+    <ul><li>mindestens <b>3 biologische Gründe</b>, warum Fred keine Pflanze ist</li><li>ein Tipp, in welchem „Club“ er besser aufgehoben ist</li><li>⭐ Bonus: Fred schreibt eine beleidigte Antwort, in der er erklärt, was er Pflanzen voraus hat</li></ul>
+    <div class="heft"><b>✏️ Ins Heft:</b> Den Brief (ca. ½ Seite). Unterstreicht alle Fachbegriffe grün.</div>
+    <details class="hint"><summary>💡 Hilfe: Briefbausteine</summary><div>„Lieber Fred, vielen Dank für deine Bewerbung. Leider müssen wir dir mitteilen, … Erstens fehlt dir … Zweitens ernährst du dich … Drittens ist deine Zellwand … Wir empfehlen dir das Reich der … Mit grünen Grüßen, deine Pflanzen“</div></details>
+    <button class="done-btn">Erledigt ✓</button>
+  </article>
+
+  <article class="task star" data-id="m1s">
+    <header><span class="tnum">⭐</span><h3>Rekordjagd: Das größte Lebewesen der Welt</h3><span class="tag">für Profis</span></header>
+    <p>In einem Wald in Oregon (USA) lebt ein <b>Hallimasch</b>, dessen Myzel etwa <b>9 km²</b> groß ist. Forschende schätzen sein Alter auf mehrere tausend Jahre. Ein Fußballfeld hat etwa 7 000 m².</p>
+    <p><b>a)</b> Wie vielen Fußballfeldern entspricht das ungefähr? (1 km² = 1 000 000 m²)<br><b>b)</b> Warum hat man so lange nicht bemerkt, dass das ein einziges Lebewesen ist? Stellt eine begründete Vermutung auf.</p>
+    <details class="sol"><summary>✅ Lösung</summary><div>a) 9 000 000 m² : 7 000 m² ≈ <b>1 300 Fußballfelder</b>.<br>b) Das Myzel liegt unsichtbar im Boden. Man sieht nur viele einzelne Fruchtkörper und hält sie für viele Pilze. Erst Erbgut-Tests zeigten: Alles gehört zu <b>einem</b> Myzel.</div></details>
+    <button class="done-btn">Erledigt ✓</button>
+  </article>
+  <p class="row"><button class="btn green" data-go="m2">Weiter zu Mission 2 🌳</button></p>
+</section>
+
+<!-- ================= MISSION 2 ================= -->
+<section class="page" id="m2">
+  <div class="hero-card">
+    <div class="mission-head">
+      <div class="big">🌳</div>
+      <div style="flex:1 1 300px">
+        <span class="pill">Mission 2 · Doppelstunde 2</span>
+        <h2>Zersetzer, Partner, Parasiten</h2>
+        <div class="lf">Leitfrage: Wo kommen Pilze im Ökosystem vor und in welcher Beziehung stehen sie zu anderen Lebewesen?</div>
+        <div class="progress"><i data-prog="m2"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="warn">⚠️ <b>Wichtig:</b> Sammelt und esst <b>niemals</b> selbst gefundene Pilze! Viele giftige Pilze sehen essbaren zum Verwechseln ähnlich. Nur Pilzsachverständige können sie sicher bestimmen.</div>
+
+  <article class="task" data-id="m2a1">
+    <header><span class="tnum">A1</span><h3>Pilz-Steckbriefe: Sechs Waldbewohner</h3><span class="tag forsch">🔬 Artenkenntnis</span><span class="tag">⏱ 15 min</span></header>
+    <p>Tippt auf eine Karte, um sie umzudrehen. Lernt die sechs Arten kennen. Danach testet <b>Navigator:in</b> die <b>Pilot:in</b>: Karte zeigen, Name nennen lassen. Dann tauschen!</p>
+    <div class="grid3" id="shroomCards"></div>
+    <div class="heft"><b>✏️ Ins Heft:</b> Überschrift <b>„2 Pilze im Ökosystem“</b>. Wählt <b>zwei</b> Arten und gestaltet je einen Mini-Steckbrief: Skizze, Name, Wo wächst er?, Besonderheit, Lebensweise (die tragt ihr nach A2 nach).</div>
+    <button class="done-btn">Erledigt ✓</button>
+  </article>
+
+  <article class="task" data-id="m2a2">
+    <header><span class="tnum">A2</span><h3>„Wer bin ich?“: Drei Lebensweisen</h3><span class="tag forsch">🔬 Ordnen</span><span class="tag">⏱ 15 min</span></header>
+    <div class="grid3">
+      <div class="choice-card" style="background:var(--earth-l)"><b>♻️ Zersetzer</b><br>(Fachwort: <i>Saprobiont</i>)<br>ernährt sich von <b>toten</b> Lebewesen und Resten (Laub, Holz) und baut sie ab.</div>
+      <div class="choice-card" style="background:var(--moss-l)"><b>🤝 Partner</b><br>(Fachwort: <i>Symbiose</i>)<br>Zwei Lebewesen leben zusammen. <b>Beide</b> haben einen Vorteil.</div>
+      <div class="choice-card" style="background:var(--shroom-l)"><b>🧛 Schmarotzer</b><br>(Fachwort: <i>Parasit</i>)<br>lebt von einem <b>lebenden</b> Lebewesen (Wirt) und <b>schadet</b> ihm.</div>
+    </div>
+    <p>Lest jede Fallkarte. Diskutiert, dann tippt die passende Lebensweise an.</p>
+    <div id="lebensweise"></div>
+    <div class="fb" id="lwScore"></div>
+    <div class="heft"><b>✏️ Ins Heft:</b> Eine Tabelle mit drei Spalten: ♻️ Zersetzer | 🤝 Symbiose | 🧛 Parasit. Je eine <b>Definition in eigenen Worten</b> und ein Pilz-Beispiel.</div>
+    <details class="hint"><summary>💡 Hilfe</summary><div>Fragt euch bei jeder Karte: (1) Ist das andere Lebewesen <b>tot oder lebendig</b>? (2) Wenn lebendig: Hat es einen <b>Vorteil</b> oder einen <b>Schaden</b>?</div></details>
+    <button class="done-btn">Erledigt ✓</button>
+  </article>
+
+  <article class="task" data-id="m2a3">
+    <header><span class="tnum">A3</span><h3>Animation: Das „Wood Wide Web“ (Mykorrhiza)</h3><span class="tag forsch">🔬 Beobachten</span><span class="tag">⏱ 15 min</span></header>
+    <p>Die Pilzfäden vieler Waldpilze umspinnen die feinen Wurzeln von Bäumen. Diese Partnerschaft heißt <b>Mykorrhiza</b> (gesprochen: Mü-ko-ritsa, „Pilzwurzel“). Schaltet die Stoffströme ein und beobachtet: <b>Was wandert wohin?</b></p>
+    <div class="stage">
+      <svg id="mykSvg" viewBox="0 0 700 420" aria-label="Mykorrhiza-Animation"></svg>
+      <div class="row"><button class="btn orange" id="mykSugar">🍬 Zucker ein</button><button class="btn blue" id="mykWater">💧 Wasser & Mineralstoffe ein</button></div>
+      <div class="stage-text" id="mykText">Tippt auf die Knöpfe, um die Stoffströme zu sehen.</div>
+    </div>
+    <div class="heft"><b>✏️ Ins Heft:</b> Zeichnet ein Pfeildiagramm: Baum ⇄ Pilz. Beschriftet die Pfeile mit dem, was jeweils geliefert wird. Erklärt: <b>Warum ist das eine Symbiose?</b></div>
+    <details class="hint"><summary>💡 Hilfe</summary><div>Der Baum kann etwas, was der Pilz nicht kann: Fotosynthese → Zucker. Die Pilzfäden sind viel feiner und länger als Wurzeln und kommen an mehr ... heran.</div></details>
+    <details class="sol"><summary>✅ Lösung zum Vergleich</summary><div>Der <b>Baum</b> stellt durch Fotosynthese Zucker her und gibt einen Teil an den Pilz ab. Der <b>Pilz</b> nimmt mit seinem riesigen Myzel Wasser und Mineralstoffe aus dem Boden auf und gibt sie an den Baum weiter. <b>Beide haben einen Vorteil</b>, deshalb ist es eine Symbiose.</div></details>
+    <button class="done-btn">Erledigt ✓</button>
+  </article>
+
+  <article class="task" data-id="m2a4">
+    <header><span class="tnum">A4</span><h3>Diagramm-Detektive: Hilft der Pilz wirklich?</h3><span class="tag forsch">🔬 Diagramm auswerten</span><span class="tag">⏱ 15 min</span></header>
+    <p>In einem Versuch wurden Kiefern-Keimlinge 6 Monate lang gezogen: eine Gruppe in Erde <b>mit</b> Mykorrhiza-Pilzen, eine Gruppe in Erde <b>ohne</b> Pilze. Sonst war alles gleich. Am Ende wurden die Pflanzen getrocknet und gewogen. Tippt auf die Säulen, dann seht ihr die Werte.</p>
+    <div class="chart" id="barChart"></div>
+    <p class="note">Vereinfachte Modelldaten, angelehnt an typische Versuchsergebnisse.</p>
+    <div class="heft"><b>✏️ Ins Heft – Diagramm in 3 Schritten:</b><br>① <b>Beschreiben:</b> Was ist dargestellt (Thema, Achsen)?<br>② <b>Vergleichen:</b> Nennt die Werte. Um wie viel mal schwerer sind die Keimlinge mit Pilz?<br>③ <b>Deuten:</b> Erklärt das Ergebnis mit dem, was ihr in A3 gelernt habt.</div>
+    <details class="hint"><summary>💡 Hilfe 1: Satzanfänge</summary><div>„Das Säulendiagramm zeigt …“ · „Die Keimlinge mit Mykorrhiza wiegen …, die ohne nur …“ · „Das liegt daran, dass der Pilz …“</div></details>
+    <details class="hint"><summary>💡 Hilfe 2: Rechnen</summary><div>Teilt den größeren Wert durch den kleineren: 3,0 : 1,2 = ?</div></details>
+    <details class="sol"><summary>✅ Lösung zum Vergleich</summary><div>① Das Säulendiagramm zeigt die Trockenmasse (in g) von Kiefernkeimlingen nach 6 Monaten, mit und ohne Mykorrhiza.<br>② Mit Pilz: 3,0 g, ohne Pilz: 1,2 g. Die Keimlinge mit Pilz sind etwa <b>2,5-mal schwerer</b>.<br>③ Der Pilz versorgt die Wurzeln mit zusätzlichem Wasser und Mineralstoffen. Deshalb kann die Kiefer besser wachsen.</div></details>
+    <button class="done-btn">Erledigt ✓</button>
+  </article>
+
+  <article class="task" data-id="m2a5">
+    <header><span class="tnum">A5</span><h3>Match! Das Dating-Profil im Wald</h3><span class="tag kreativ">🎨 Kreativ</span><span class="tag">⏱ 10 min</span></header>
+    <p>Die Birke Bea sucht einen Partner. Erstellt ein <b>Dating-Profil</b> für Bea <b>und</b> eins für den Fliegenpilz Fred. Jeweils: Name, Wohnort, „Das biete ich“, „Das suche ich“, ein witziger Spruch. Am Ende: Passen die beiden zusammen? ❤️</p>
+    <div class="heft"><b>✏️ Ins Heft:</b> Zwei Profilkarten nebeneinander, dazwischen ein Herz mit dem Fachwort <b>Mykorrhiza</b>.</div>
+    <button class="done-btn">Erledigt ✓</button>
+  </article>
+
+  <article class="task star" data-id="m2s">
+    <header><span class="tnum">⭐</span><h3>Der schlaue Parasit</h3><span class="tag">für Profis</span></header>
+    <p>Ein Parasit schadet seinem Wirt. Trotzdem tötet ein „schlauer“ Parasit seinen Wirt meist <b>nicht sofort</b>. Stellt eine begründete Vermutung auf, warum das für den Parasiten besser ist. Und: Der Hallimasch macht es anders. Er lebt <b>nach</b> dem Tod des Baumes einfach weiter. Wie schafft er das?</p>
+    <details class="sol"><summary>✅ Lösung</summary><div>Stirbt der Wirt, verliert der Parasit seine Nahrungsquelle und sein Zuhause. Lebt der Wirt lange, kann der Parasit lange von ihm leben. Der Hallimasch kann zusätzlich als <b>Zersetzer</b> leben: Er baut das tote Holz ab. Er hat also zwei Lebensweisen.</div></details>
+    <button class="done-btn">Erledigt ✓</button>
+  </article>
+  <p class="row"><button class="btn green" data-go="m3">Weiter zu Mission 3 🍂</button></p>
+</section>
+
+<!-- ================= MISSION 3 ================= -->
+<section class="page" id="m3">
+  <div class="hero-card">
+    <div class="mission-head">
+      <div class="big">🍂</div>
+      <div style="flex:1 1 300px">
+        <span class="pill">Mission 3 · Doppelstunde 3</span>
+        <h2>Wer wohnt in der Streu?</h2>
+        <div class="lf">Leitfrage: Welche Wirbellosen finden wir im Falllaub, und wie sind sie an ihren Lebensraum angepasst?</div>
+        <div class="progress"><i data-prog="m3"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <article class="task" data-id="m3a1">
+    <header><span class="tnum">A1</span><h3>Virtuelle Streuprobe: Laub umdrehen!</h3><span class="tag forsch">🔬 Erkunden</span><span class="tag">⏱ 10 min</span></header>
+    <p>Die <b>Streu</b> ist die oberste Schicht des Waldbodens aus totem Laub. Darunter wimmelt es! Tippt auf die Blätter, um sie wegzuschieben. Tippt dann auf ein Tier: Es erscheint groß unter der Lupe. Findet alle <b>9 Tiere</b>.</p>
+    <div class="stage">
+      <svg id="streuSvg" viewBox="0 0 700 420" aria-label="Laubstreu mit versteckten Tieren"></svg>
+      <div class="row" style="justify-content:space-between"><b id="streuCount">Gefunden: 0 / 9</b><button class="btn light" id="streuReset">Neues Laub</button></div>
+    </div>
+    <div class="lupe" id="lupe"><span class="note">🔍 Tippt ein gefundenes Tier an: Hier erscheint es vergrößert, damit ihr Beine zählen könnt.</span></div>
+    <div class="heft"><b>✏️ Ins Heft:</b> Überschrift <b>„3 Wer wohnt in der Streu?“</b>. Legt eine Tabelle an: Nr. | Skizze | Anzahl Beine | Name | Zersetzer oder Räuber? (Name und Rolle füllt ihr in A2 aus.)</div>
+    <button class="done-btn">Erledigt ✓</button>
+  </article>
+
+  <article class="task" data-id="m3a2">
+    <header><span class="tnum">A2</span><h3>Bestimmungsschlüssel: Wer ist wer?</h3><span class="tag forsch">🔬 Bestimmen</span><span class="tag">⏱ 25 min</span></header>
+    <p>Wählt ein Tier aus A1 (Lupe!) und beantwortet die Fragen des Schlüssels <b>Schritt für Schritt</b>. Am Ende erfahrt ihr den Namen. Tragt ihn in eure Heft-Tabelle ein. Wiederholt das für alle 9 Tiere.</p>
+    <div class="key-box" id="keyBox"></div>
+    <h3 style="margin-top:18px">Selbstkontrolle: Ordnet jeder Nummer Namen und Rolle zu</h3>
+    <div style="overflow-x:auto"><table class="idcheck" id="idTable"></table></div>
+    <div class="row" style="margin-top:8px"><button class="btn green" id="idCheck">Prüfen</button></div>
+    <div class="fb" id="idFb"></div>
+    <details class="hint"><summary>💡 Hilfe: Zersetzer oder Räuber?</summary><div><b>Zersetzer</b> fressen tote Pflanzenreste (Laub, Holz) oder Pilzfäden. <b>Räuber</b> jagen andere Tiere. Die Info steht am Ende des Schlüssels!</div></details>
+    <button class="done-btn">Erledigt ✓</button>
+  </article>
+
+  <article class="task" data-id="m3a3">
+    <header><span class="tnum">A3</span><h3>Forschungsgerät: Der Berlese-Trichter</h3><span class="tag forsch">🔬 Experiment</span><span class="tag">⏱ 15 min</span></header>
+    <p>Forschende holen winzige Bodentiere mit einem Trick aus dem Laub: dem <b>Berlese-Trichter</b>. Laub kommt auf ein Sieb in einem Trichter, darüber hängt eine Lampe.</p>
+    <p><b>Bevor ihr die Lampe einschaltet:</b> Was wird passieren? Schreibt eine begründete Vermutung ins Heft. <b>Dann</b> einschalten!</p>
+    <div class="stage">
+      <svg id="berSvg" viewBox="0 0 700 420" aria-label="Berlese-Trichter"></svg>
+      <div class="row"><button class="btn orange" id="berLamp">💡 Lampe einschalten</button><button class="btn light" id="berReset">Neu starten</button></div>
+      <div class="stage-text" id="berText">Die Lampe ist aus. Die Tiere sitzen im Laub.</div>
+    </div>
+    <div class="heft"><b>✏️ Ins Heft:</b> ① Vermutung („Wir vermuten, dass …, weil …“) ② Beobachtung ③ Erklärung: Welche Bedingungen mögen Bodentiere? Was sagt das über ihren Lebensraum?</div>
+    <details class="hint"><summary>💡 Hilfe</summary><div>Was macht die Lampe mit dem Laub von oben her? Denkt an Licht, Wärme und Feuchtigkeit.</div></details>
+    <details class="sol"><summary>✅ Lösung zum Vergleich</summary><div>Die Lampe macht das Laub von oben <b>hell, warm und trocken</b>. Die Bodentiere fliehen nach unten, wo es dunkler, kühler und feuchter ist, und fallen in das Auffanggefäß. Bodentiere sind also an einen <b>dunklen, feuchten und kühlen</b> Lebensraum angepasst.</div></details>
+    <button class="done-btn">Erledigt ✓</button>
+  </article>
+
+  <article class="task" data-id="m3a4">
+    <header><span class="tnum">A4</span><h3>Superheld:innen der Streu</h3><span class="tag kreativ">🎨 Kreativ</span><span class="tag">⏱ 15 min</span></header>
+    <p>Jedes Bodentier hat eine <b>Superkraft</b>: eine Angepasstheit an seinen Lebensraum. Wählt ein Tier und gestaltet eine <b>Superheld:innen-Sammelkarte</b>.</p>
+    <div class="grid2">
+      <div class="choice-card"><b>Auf die Karte gehören:</b><ul style="margin:.3em 0"><li>Heldenname + echter Name</li><li>Zeichnung (Beine richtig gezählt!)</li><li>🦸 Superkraft = Angepasstheit</li><li>🕳️ Schwachstelle (Was verträgt es nicht?)</li><li>💼 Job im Ökosystem (Zersetzer oder Räuber?)</li></ul></div>
+      <div class="choice-card" style="background:var(--earth-l)"><b>Infos zu den Superkräften</b><br><span style="font-size:.92rem">🪱 <b>Regenwurm:</b> atmet über die feuchte Haut, Borsten zum Graben<br>🦐 <b>Assel:</b> atmet mit kiemenähnlichen Organen, braucht Feuchtigkeit, ist ein Krebstier an Land!<br>🐛 <b>Doppelfüßer:</b> harter Panzer, rollt sich ein<br>🦂 <b>Hundertfüßer:</b> flacher Körper für enge Spalten, Giftklauen<br>🦗 <b>Springschwanz:</b> Sprunggabel katapultiert ihn weg</span></div>
+    </div>
+    <div class="heft"><b>✏️ Ins Heft:</b> Eure Sammelkarte (ca. ½ Seite). Tauscht die Karten danach mit einem anderen Team und vergleicht!</div>
+    <button class="done-btn">Erledigt ✓</button>
+  </article>
+
+  <article class="task star" data-id="m3s">
+    <header><span class="tnum">⭐</span><h3>Echte Forschung: Streuprobe draußen</h3><span class="tag">nach Absprache mit der Lehrkraft</span></header>
+    <p>Wenn eure Lehrkraft es erlaubt: Holt mit Becherlupe und Schale eine Handvoll Laub vom Schulgelände. Wie viele verschiedene Tiere findet ihr? Bestimmt sie mit dem Schlüssel oben.</p>
+    <div class="warn">🐞 Tiere vorsichtig mit Pinsel behandeln, feucht halten und nach max. 20 min <b>genau dort zurückbringen</b>, wo ihr sie gefunden habt.</div>
+    <button class="done-btn">Erledigt ✓</button>
+  </article>
+  <p class="row"><button class="btn green" data-go="m4">Weiter zu Mission 4 ♻️</button></p>
+</section>
+
+<!-- ================= MISSION 4 ================= -->
+<section class="page" id="m4">
+  <div class="hero-card">
+    <div class="mission-head">
+      <div class="big">♻️</div>
+      <div style="flex:1 1 300px">
+        <span class="pill">Mission 4 · Doppelstunde 4</span>
+        <h2>Fall gelöst: Die Müllabfuhr des Waldes</h2>
+        <div class="lf">Leitfrage: Welche ökologische Bedeutung haben Pilze und Wirbellose im Waldboden?</div>
+        <div class="progress"><i data-prog="m4"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <article class="task" data-id="m4a1">
+    <header><span class="tnum">A1</span><h3>Animation: Die Reise eines Buchenblatts</h3><span class="tag forsch">🔬 Beobachten</span><span class="tag">⏱ 15 min</span></header>
+    <p>Schiebt den Regler Schritt für Schritt. Wer arbeitet in welcher Phase am Blatt?</p>
+    <div class="stage">
+      <svg id="zerSvg" viewBox="0 0 700 400" aria-label="Zersetzung eines Blattes"></svg>
+      <input type="range" id="zerRange" min="0" max="6" step="1" value="0" aria-label="Phase">
+      <div class="stage-text" id="zerText"></div>
+    </div>
+    <div class="heft"><b>✏️ Ins Heft:</b> Überschrift <b>„4 Die Müllabfuhr des Waldes“</b>. Zeichnet einen Zeitstrahl mit den Phasen der Zersetzung. Notiert unter jeder Phase, welche Lebewesen beteiligt sind.</div>
+    <button class="done-btn">Erledigt ✓</button>
+  </article>
+
+  <article class="task" data-id="m4a2">
+    <header><span class="tnum">A2</span><h3>Kreislauf-Puzzle</h3><span class="tag forsch">🔬 Ordnen</span><span class="tag">⏱ 10 min</span></header>
+    <p>Tippt die Karten in der <b>richtigen Reihenfolge</b> an (1 → 6). Danach prüfen.</p>
+    <div class="puz" id="puz"></div>
+    <div class="row" style="margin-top:10px"><button class="btn green" id="puzCheck">Prüfen</button><button class="btn light" id="puzReset">Neu mischen</button></div>
+    <div class="fb" id="puzFb"></div>
+    <div class="heft"><b>✏️ Ins Heft:</b> Zeichnet die 6 Schritte als <b>Kreislauf</b> (Kreis mit Pfeilen). Warum ist es ein Kreis und keine Linie? Schreibt einen Satz dazu.</div>
+    <button class="done-btn">Erledigt ✓</button>
+  </article>
+
+  <article class="task" data-id="m4a3">
+    <header><span class="tnum">A3</span><h3>Der Netzbeutel-Versuch</h3><span class="tag forsch">🔬 Diagramm auswerten</span><span class="tag">⏱ 20 min</span></header>
+    <p>Forschende füllen gleich viel Buchenlaub in Netzbeutel mit unterschiedlich großen Löchern (Maschen) und legen sie auf den Waldboden. Alle 3 Monate wiegen sie, wie viel Laub noch übrig ist.</p>
+    <div class="grid3" style="margin-bottom:10px">
+      <div class="choice-card"><b>Feine Maschen</b> (0,05 mm)<br><span class="note">Nur Pilze und Bakterien kommen hinein.</span></div>
+      <div class="choice-card"><b>Mittlere Maschen</b> (1 mm)<br><span class="note">Pilze, Bakterien + kleine Tiere (Springschwänze, Milben)</span></div>
+      <div class="choice-card"><b>Grobe Maschen</b> (5 mm)<br><span class="note">Alle: auch Asseln, Regenwürmer, Doppelfüßer</span></div>
+    </div>
+    <div class="chart" id="lineChart"></div>
+    <p class="note">Vereinfachte Modelldaten. Fahrt mit dem Finger über das Diagramm, dann seht ihr die Werte.</p>
+    <div class="heft"><b>✏️ Ins Heft:</b> ① Beschreibt das Diagramm (Achsen, Verlauf der drei Linien). ② Vergleicht die Werte nach 12 Monaten. ③ Deutet: Welche Rolle spielen die Bodentiere? Schaffen Pilze und Bakterien es auch allein?</div>
+    <details class="hint"><summary>💡 Hilfe 1</summary><div>Lest ab: Wie viel Prozent Laub sind nach 12 Monaten in jedem Beutel übrig? Wie viel wurde also abgebaut?</div></details>
+    <details class="hint"><summary>💡 Hilfe 2</summary><div>Was ist der einzige Unterschied zwischen den Beuteln? Genau dieser Unterschied muss die Ursache sein.</div></details>
+    <details class="sol"><summary>✅ Lösung zum Vergleich</summary><div>① Das Liniendiagramm zeigt die verbleibende Laubmasse (in %) über 12 Monate für drei Maschenweiten. Alle Linien sinken, aber unterschiedlich schnell.<br>② Nach 12 Monaten: fein 74 %, mittel 52 %, grob 28 % übrig.<br>③ Je mehr Tiere hinein können, desto schneller wird das Laub abgebaut. Die Tiere <b>zerkleinern</b> das Laub, so haben Pilze und Bakterien mehr Angriffsfläche. Pilze und Bakterien schaffen den Abbau auch allein, aber <b>viel langsamer</b>.</div></details>
+    <button class="done-btn">Erledigt ✓</button>
+  </article>
+
+  <article class="task" data-id="m4a4">
+    <header><span class="tnum">A4</span><h3>Der Abschlussbericht: Fall gelöst!</h3><span class="tag duo">🗣️ Austausch</span><span class="tag">⏱ 15 min</span></header>
+    <p>Schlagt im Heft eure <b>Vermutung vom Anfang</b> auf. Wurde sie bestätigt, teilweise bestätigt oder widerlegt? Schreibt dann den <b>Abschlussbericht</b>, der die Leitfrage beantwortet:</p>
+    <p style="font-size:1.15rem;text-align:center"><b>„Warum wächst der Waldboden nicht jedes Jahr höher?“</b></p>
+    <p>Diese Begriffe müssen vorkommen: <span class="kbd">Zersetzer</span> <span class="kbd">Pilze</span> <span class="kbd">Bodentiere</span> <span class="kbd">zerkleinern</span> <span class="kbd">Humus</span> <span class="kbd">Mineralstoffe</span> <span class="kbd">Kreislauf</span></p>
+    <div class="heft"><b>✏️ Ins Heft:</b> „Unsere Vermutung war … Sie wurde … Begründung: …“ und darunter der Bericht (5–8 Sätze).</div>
+    <details class="sol"><summary>✅ Musterbericht zum Vergleich</summary><div>Der Waldboden wächst nicht höher, weil das Laub jedes Jahr von <b>Zersetzern</b> abgebaut wird. Zuerst <b>zerkleinern</b> Bodentiere wie Asseln, Schnecken, Doppelfüßer und Springschwänze das Laub. Regenwürmer ziehen Reste in den Boden und scheiden Kotkrümel aus. Dann bauen <b>Pilze</b> und Bakterien die Reste weiter ab. Dabei entstehen <b>Humus</b> und <b>Mineralstoffe</b>. Die Pflanzen nehmen die Mineralstoffe mit ihren Wurzeln wieder auf und bilden daraus neue Blätter. So entsteht ein <b>Kreislauf</b>, und es bleibt kein Laubberg übrig.</div></details>
+    <button class="done-btn">Erledigt ✓</button>
+  </article>
+
+  <article class="task" data-id="m4a5">
+    <header><span class="tnum">A5</span><h3>Wahlaufgabe: Zeig, was du weißt!</h3><span class="tag kreativ">🎨 Kreativ</span><span class="tag">⏱ 20 min</span></header>
+    <p>Wählt <b>eine</b> Aufgabe:</p>
+    <div class="grid3">
+      <div class="choice-card"><b>📢 Werbeplakat</b><br>„Müllabfuhr des Waldes GmbH: Wir räumen auf, seit es Wälder gibt!“ Stellt die Mitarbeitenden (Pilze & Bodentiere) und ihre Aufgaben vor.</div>
+      <div class="choice-card"><b>💬 Comic</b><br>„Die Reise von Blatt Bruno“: in 6 Bildern vom Ast bis zum Humus. Mit Sprechblasen der Tiere und Pilze.</div>
+      <div class="choice-card"><b>🎙️ Erklär-Skript</b><br>Schreibt ein kurzes Skript (1 min), in dem ihr einem Fünftklässler erklärt, warum Pilze für den Wald unverzichtbar sind. Lest es euch gegenseitig vor.</div>
+    </div>
+    <div class="heft"><b>✏️ Ins Heft:</b> Euer Werk (1 Seite). Mindestens 4 Fachbegriffe aus dieser Mission!</div>
+    <button class="done-btn">Erledigt ✓</button>
+  </article>
+
+  <article class="task star" data-id="m4s">
+    <header><span class="tnum">⭐</span><h3>Gedankenexperiment: Eine Welt ohne Zersetzer</h3><span class="tag">für Profis</span></header>
+    <p>Stellt euch vor, über Nacht verschwinden alle Pilze und Bodentiere. Beschreibt die Folgen nach 1 Jahr, nach 10 Jahren und nach 100 Jahren für den Wald. Denkt an das Laub <b>und</b> an die Bäume!</p>
+    <p><b>Und als Forscher-Profi:</b> Warum müssen im Netzbeutel-Versuch alle Beutel <b>dasselbe Laub</b> enthalten und am <b>selben Ort</b> liegen?</p>
+    <details class="sol"><summary>✅ Lösung</summary><div>Das Laub würde sich auftürmen. Die Mineralstoffe blieben im toten Laub gefangen. Die Bäume bekämen immer weniger Mineralstoffe, würden schlechter wachsen und schließlich absterben. Ohne Mykorrhiza-Pilze fehlte ihnen zusätzlich Wasser.<br><b>Versuchsplanung:</b> Nur <b>ein</b> Faktor (die Maschenweite) darf sich unterscheiden. Sonst wüsste man nicht, was den Unterschied verursacht (z. B. anderes Laub, andere Feuchtigkeit).</div></details>
+    <button class="done-btn">Erledigt ✓</button>
+  </article>
+  <p class="row"><button class="btn green" data-go="test">Zum Selbsttest 🏆</button></p>
+</section>
+
+<!-- ================= SELBSTTEST ================= -->
+<section class="page" id="test">
+  <div class="hero-card">
+    <div class="mission-head">
+      <div class="big">🏆</div>
+      <div style="flex:1 1 300px">
+        <span class="pill">Abschluss</span>
+        <h2>Selbsttest: Seid ihr Waldboden-Profis?</h2>
+        <div class="lf">Bearbeitet den Test zuerst <b>allein</b> und vergleicht dann mit eurem Partner. Bei jeder Antwort bekommt ihr sofort eine Rückmeldung.</div>
+      </div>
+    </div>
+  </div>
+  <div id="quiz"></div>
+  <div class="score" id="quizScore">Beantwortet alle Fragen: 0 / 12</div>
+  <p class="row" style="margin-top:10px"><button class="btn light" id="quizReset">Test neu starten</button></p>
+  <div class="task">
+    <header><span class="tnum">🗺️</span><h3>Lernlandkarte: Was kann ich jetzt?</h3></header>
+    <p>Füllt jetzt die Spalte <b>„Ende“</b> aus. Wo seid ihr noch unsicher? Schaut in die passende Mission zurück.</p>
+    <div id="llTable2"></div>
+    <div class="heft"><b>✏️ Ins Heft:</b> Schreibt auf: „Am meisten gelernt habe ich über … Noch üben muss ich …“</div>
+  </div>
+</section>
+
+<!-- ================= LEHRKRAFT ================= -->
+<section class="page" id="info">
+  <div class="hero-card">
+    <h2>👩‍🏫 Hinweise für Lehrkräfte</h2>
+    <p><b>Bezug zum schulinternen Lehrplan (KAS, Jg. 7, IF 4 Ökologie und Naturschutz):</b> UV 7.2 „Pilze und ihre Rolle im Ökosystem“ (ca. 4 Ustd.) und UV 7.3 „Bodenlebewesen und ihre Rolle im Ökosystem“.<br>
+    <b>Kompetenzschwerpunkt:</b> UF3 Ordnung und Systematisierung (Vergleich Pilz – Tier – Pflanze, biotische Beziehungen, Überblick über Streu-Taxa). Dazu E-Kompetenzen: begründete Vermutungen aufstellen, Diagramme auswerten, Bestimmungsschlüssel nutzen.<br>
+    <b>Vernetzung:</b> ← UV 5.1 (Bau der Pflanzenzelle) · → UV 8.2 / 8.3 / 8.8 (Pilze als Destruenten, Stoffkreisläufe)</p>
+    <table class="data" style="width:100%">
+      <tr><th>Doppelstunde</th><th>Inhalt</th><th>Kern-Ergebnis im Heft</th></tr>
+      <tr><td>Start (DS 1, 10 min)</td><td>Problemfrage, Gedankenexperiment, Hypothese, Lernlandkarte</td><td>Begründete Vermutung</td></tr>
+      <tr><td>Mission 1 (DS 1)</td><td>Merkmalsvergleich, Bau (Myzel, Hyphen, Fruchtkörper, Sporen)</td><td>Vergleichstabelle, beschriftete Skizze</td></tr>
+      <tr><td>Mission 2 (DS 2)</td><td>Artenkenntnis (6 Arten), Saprobiont/Symbiose/Parasit, Mykorrhiza, Diagramm</td><td>Lebensweisen-Tabelle, Pfeildiagramm</td></tr>
+      <tr><td>Mission 3 (DS 3)</td><td>Streu-Taxa, Bestimmungsschlüssel, Berlese-Trichter, Angepasstheiten</td><td>Bestimmungstabelle, Versuchsprotokoll</td></tr>
+      <tr><td>Mission 4 (DS 4)</td><td>Zersetzerkette, Kreislauf, Netzbeutel-Versuch, Hypothesenprüfung, Selbsttest</td><td>Kreislauf, Abschlussbericht</td></tr>
+    </table>
+    <p><b>Differenzierung:</b> Gestufte Hilfen (💡) und Lösungen (✅) sind aufklappbar. ⭐-Aufgaben für schnelle Teams. Die Zeitangaben sind Richtwerte. Die kreativen Aufgaben (🎨) eignen sich auch als Hausaufgabe.<br>
+    <b>Sicherung:</b> Alle Ergebnisse entstehen im Heft. Die Seite gibt Überschriften und Struktur vor. Ein Plenum zur Sicherung bietet sich nach M2-A2 (Lebensweisen) und nach M4-A4 (Rückbezug auf die Hypothese) an.<br>
+    <b>Material:</b> 1 iPad pro Paar, Hefte, Buntstifte. Optional für ⭐ M3: Becherlupen, Pinsel, Schalen, Laubstreu.<br>
+    <b>Daten:</b> Die Diagrammwerte (Mykorrhiza, Netzbeutel) sind <b>vereinfachte Modelldaten</b> für die Jahrgangsstufe und als solche gekennzeichnet.<br>
+    <b>Technik:</b> Einzelne HTML-Datei ohne externe Ressourcen, funktioniert nach dem Laden offline. Der Fortschritt liegt nur im lokalen Speicher des Geräts. Zurücksetzen für den nächsten Kurs: <button class="btn light" id="resetAll" style="padding:4px 12px">Alle Eingaben auf diesem Gerät löschen</button></p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="row"><button data-dlg="dlgImp">Impressum</button><button data-dlg="dlgDs">Datenschutz</button><button data-go="info">Hinweise für Lehrkräfte</button></div>
+    <p style="margin:.6em 0 0;opacity:.7">Alle Grafiken und Animationen sind selbst erstellt. Unterrichtsmaterial Biologie Jg. 7 · Patrick Hafner</p>
+  </div>
+</footer>
+
+<dialog id="dlgImp">
+  <h2>Impressum</h2>
+  <p><b>Angaben gemäß § 5 DDG</b><br>Patrick Hafner<br>Georgsplatz 10<br>50676 Köln</p>
+  <p><b>Kontakt</b><br>E-Mail: p.hafner@kas.schule.koeln</p>
+  <p><b>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</b><br>Patrick Hafner, Anschrift wie oben</p>
+  <h3>Haftung für Inhalte</h3>
+  <p>Die Inhalte dieser Seite wurden mit größter Sorgfalt als Unterrichtsmaterial erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte kann jedoch keine Gewähr übernommen werden. Diese Seite enthält keine Links zu externen Inhalten Dritter, außer im Datenschutzhinweis.</p>
+  <h3>Urheberrecht</h3>
+  <p>Texte, Grafiken und Animationen wurden eigens für diese Seite erstellt. Die Nutzung im Unterricht ist ausdrücklich erwünscht.</p>
+  <p><button class="btn" data-close>Schließen</button></p>
+</dialog>
+
+<dialog id="dlgDs">
+  <h2>Datenschutzerklärung</h2>
+  <h3>1. Verantwortlicher</h3>
+  <p>Patrick Hafner, Georgsplatz 10, 50676 Köln, E-Mail: p.hafner@kas.schule.koeln</p>
+  <h3>2. Grundsatz</h3>
+  <p>Diese Lernseite erhebt <b>keine</b> personenbezogenen Daten. Es gibt keine Anmeldung, keine Eingabe von Namen, keine Cookies, kein Tracking, keine Analyse-Tools und keine eingebundenen Inhalte Dritter (z. B. Schriftarten, Videos oder Karten). Alle Grafiken sind direkt in der Seite enthalten.</p>
+  <h3>3. Hosting über GitHub Pages</h3>
+  <p>Die Seite wird über GitHub Pages bereitgestellt (GitHub Inc., 88 Colin P. Kelly Jr. St., San Francisco, CA 94107, USA, eine Tochter der Microsoft Corporation). Beim Aufruf verarbeitet GitHub technisch notwendige Daten, insbesondere Ihre IP-Adresse, in Server-Logfiles, um die Seite auszuliefern und die Sicherheit zu gewährleisten. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einer sicheren und zuverlässigen Bereitstellung) bzw. Art. 6 Abs. 1 lit. e DSGVO i. V. m. dem schulischen Bildungsauftrag. Eine Übermittlung in die USA kann stattfinden; GitHub ist unter dem EU-U.S. Data Privacy Framework zertifiziert. Weitere Informationen: GitHub General Privacy Statement (docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement).</p>
+  <h3>4. Lokale Speicherung auf Ihrem Gerät</h3>
+  <p>Damit der Lernfortschritt (erledigte Aufgaben, Selbsteinschätzung, Testantworten) beim nächsten Öffnen noch da ist, speichert die Seite diese Angaben im lokalen Speicher (localStorage) <b>Ihres Browsers</b>. Diese Daten verlassen das Gerät nicht, werden nicht an den Verantwortlichen oder Dritte übertragen und enthalten keine Namen. Sie können sie jederzeit löschen: über den Knopf „Alle Eingaben auf diesem Gerät löschen“ (Hinweise für Lehrkräfte) oder über die Browsereinstellungen.</p>
+  <h3>5. Ihre Rechte</h3>
+  <p>Sie haben das Recht auf Auskunft (Art. 15 DSGVO), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18) und Widerspruch (Art. 21). Zudem können Sie sich bei einer Aufsichtsbehörde beschweren, z. B. bei der Landesbeauftragten für Datenschutz und Informationsfreiheit Nordrhein-Westfalen (LDI NRW), Kavalleriestraße 2–4, 40213 Düsseldorf.</p>
+  <p class="note">Stand: November 2026</p>
+  <p><button class="btn" data-close>Schließen</button></p>
+</dialog>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+const NS="http://www.w3.org/2000/svg";
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const KEY="missionWaldboden7_v1";
+let S={};
+try{S=JSON.parse(localStorage.getItem(KEY))||{};}catch(e){S={};}
+S.done=S.done||{}; S.ll=S.ll||{}; S.quiz=S.quiz||{};
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+function toast(t){const el=$("#toast");el.textContent=t;el.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove("show"),2600);}
+function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+function rnd(seed){let s=seed;return()=>{s=(s*16807)%2147483647;return(s-1)/2147483646;};}
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+
+/* falling leaves header */
+const fl=$(".falling");["🍂","🍁","🍃","🍂","🍄","🍁","🍂","🍃"].forEach((c,i)=>{const s=document.createElement("span");s.textContent=c;s.style.left=(5+i*12)+"%";s.style.animationDuration=(6+i%3*2)+"s";s.style.animationDelay=(i*0.9)+"s";fl.appendChild(s);});
+
+/* ===== Navigation ===== */
+const PAGES=[["start","🕵️ Start"],["m1","🍄 Mission 1"],["m2","🌳 Mission 2"],["m3","🍂 Mission 3"],["m4","♻️ Mission 4"],["test","🏆 Selbsttest"],["info","👩‍🏫 Info"]];
+const bar=$("#tabbar");
+PAGES.forEach(([id,label])=>{const b=document.createElement("button");b.dataset.page=id;b.innerHTML=label+(/^m\d/.test(id)?' <span class="mini"><i data-prog="'+id+'"></i></span>':"");b.onclick=()=>go(id);bar.appendChild(b);});
+function go(id){
+  if(!document.getElementById(id))id="start";
+  $$("section.page").forEach(s=>s.classList.toggle("show",s.id===id));
+  $$("#tabbar button").forEach(b=>b.classList.toggle("active",b.dataset.page===id));
+  try{if(location.hash!=="#"+id)history.replaceState(null,"","#"+id);}catch(e){}
+  try{window.scrollTo({top:0,behavior:"smooth"});}catch(e){window.scrollTo(0,0);}
+  S.page=id;save();
+}
+document.addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(g){go(g.dataset.go);}
+  const d=e.target.closest("[data-dlg]");if(d){const dl=document.getElementById(d.dataset.dlg);try{dl.showModal();}catch(err){dl.setAttribute("open","");}}
+  if(e.target.matches("[data-close]")){const dl=e.target.closest("dialog");dl.close?dl.close():dl.removeAttribute("open");}
+});
+
+/* ===== Erledigt & Fortschritt ===== */
+const BADGES=[["m1","🍄","Pilz-Profi"],["m2","🤝","Netzwerker:in"],["m3","🔍","Bodendetektiv"],["m4","♻️","Kreislauf-Kenner:in"],["test","🏆","Waldboden-Expert:in"]];
+function updateProgress(){
+  ["m1","m2","m3","m4"].forEach(m=>{
+    const tasks=$$("#"+m+" .task[data-id]");const n=tasks.filter(t=>S.done[t.dataset.id]).length;
+    const p=tasks.length?n/tasks.length*100:0;
+    $$('[data-prog="'+m+'"]').forEach(i=>i.style.width=p+"%");
+  });
+  const bd=$("#badges");bd.innerHTML="";
+  BADGES.forEach(([m,ic,name])=>{
+    let got;
+    if(m==="test"){got=(S.quizBest||0)>=9;}
+    else{const core=$$("#"+m+" .task[data-id]:not(.star)");got=core.length&&core.every(t=>S.done[t.dataset.id]);}
+    const d=document.createElement("div");d.className="bdg"+(got?" got":"");d.innerHTML="<div>"+ic+"</div>"+name;bd.appendChild(d);
+  });
+}
+$$(".task[data-id]").forEach(t=>{
+  const id=t.dataset.id;if(S.done[id])t.classList.add("done");
+  const b=t.querySelector(".done-btn");if(!b)return;
+  b.onclick=()=>{S.done[id]=!S.done[id];t.classList.toggle("done",S.done[id]);save();updateProgress();
+    if(S.done[id]){const m=t.closest("section").id;const core=$$("#"+m+" .task[data-id]:not(.star)");
+      if(core.every(x=>S.done[x.dataset.id])){const B=BADGES.find(x=>x[0]===m);if(B)toast(B[1]+" Abzeichen „"+B[2]+"“ freigeschaltet!");}
+      else toast("Super! Weiter so 💪");}
+  };
+});
+
+/* ===== Lernlandkarte ===== */
+const LL=["Pilze mit Pflanzen und Tieren vergleichen.","den Bau eines Pilzes beschreiben (Myzel, Hyphen, Fruchtkörper, Sporen).","drei Lebensweisen von Pilzen unterscheiden (Zersetzer, Symbiose, Parasit).","einige häufige Pilzarten erkennen.","Bodentiere mit einem Bestimmungsschlüssel bestimmen.","Angepasstheiten von Bodentieren an ihren Lebensraum erklären.","erklären, wie aus Laub Humus wird.","ein Diagramm beschreiben und auswerten.","begründete Vermutungen aufstellen und überprüfen."];
+const FACES=["😟","🙂","😎"];
+function renderLL(target){
+  let h='<table class="ll"><tr><th style="text-align:left">Ich kann …</th><th>Start</th><th>Ende</th></tr>';
+  LL.forEach((t,i)=>{h+="<tr><td>"+t+"</td>";["s","e"].forEach(c=>{h+='<td><div class="smi">'+FACES.map((f,k)=>'<button data-ll="'+i+c+'" data-v="'+k+'" class="'+(S.ll[i+c]===k?"on":"")+'" aria-label="'+f+'">'+f+"</button>").join("")+"</div></td>";});h+="</tr>";});
+  target.innerHTML=h+"</table>";
+}
+function renderAllLL(){renderLL($("#llTable"));renderLL($("#llTable2"));}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-ll]");if(!b)return;S.ll[b.dataset.ll]=+b.dataset.v;save();renderAllLL();});
+renderAllLL();
+
+/* ===== A0: Laubstapel ===== */
+(function(){
+  const svg=$("#stackSvg");
+  svg.innerHTML=`<defs><linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfe6f7"/><stop offset="1" stop-color="#f4f1e4"/></linearGradient>
+  <pattern id="leafPat" width="26" height="14" patternUnits="userSpaceOnUse"><rect width="26" height="14" fill="#c9782a"/><ellipse cx="7" cy="5" rx="7" ry="3" fill="#e0923a"/><ellipse cx="19" cy="10" rx="7" ry="3" fill="#a85f1f"/><ellipse cx="20" cy="3" rx="5" ry="2" fill="#d9a441"/></pattern></defs>
+  <rect width="700" height="360" fill="url(#skyG)"/>
+  <rect y="320" width="700" height="40" fill="#6b4a2f"/>
+  <g id="trees"></g>
+  <rect id="stackR" x="0" y="320" width="700" height="0" fill="url(#leafPat)"/>
+  <g id="kid"><circle cx="420" cy="208" r="14" fill="#f2c49b"/><path d="M420 222 v52 M420 236 l-20 22 M420 236 l20 22 M420 274 l-14 46 M420 274 l14 46" stroke="#2f5f9e" stroke-width="9" stroke-linecap="round"/><text x="445" y="215" font-size="14" fill="#333">du (1,60 m)</text></g>
+  <g id="scaleG"></g>
+  <text id="stackLbl" x="20" y="34" font-size="22" font-weight="700" fill="#2b2a26"></text>`;
+  const tr=svg.querySelector("#trees");
+  [[90,1],[230,.8],[580,1.1],[660,.7]].forEach(([x,s])=>{el("rect",{x:x-8*s,y:320-160*s,width:16*s,height:160*s,fill:"#6d4c33"},tr);el("ellipse",{cx:x,cy:320-170*s,rx:55*s,ry:60*s,fill:"#5d9a45"},tr);el("ellipse",{cx:x-25*s,cy:320-150*s,rx:35*s,ry:35*s,fill:"#6fae52"},tr);});
+  const sc=svg.querySelector("#scaleG");
+  for(let m=1;m<=6;m++){const y=320-m*55;el("line",{x1:640,x2:700,y1:y,y2:y,stroke:"#333","stroke-dasharray":"4 3"},sc);const t=el("text",{x:645,y:y-4,"font-size":13,fill:"#333"},sc);t.textContent=m+" m";}
+  const r=$("#stackRange"),R=svg.querySelector("#stackR"),L=svg.querySelector("#stackLbl"),T=$("#stackText");
+  function upd(){const y=+r.value;const hm=y*0.03;const px=Math.min(hm*55,320);R.setAttribute("y",320-px);R.setAttribute("height",px);L.textContent="Jahr "+y+": "+(hm<1?Math.round(hm*100)+" cm":hm.toFixed(1).replace(".",",")+" m")+" Laub";
+    let msg;if(y===0)msg="Jahr 0: Der Waldboden ist frei.";else if(hm<0.3)msg="Noch geht's: Das Laub raschelt bis zu den Knöcheln.";else if(hm<1)msg="Das Laub reicht schon bis zum Knie oder zur Hüfte. Kleine Pflanzen bekommen kein Licht mehr!";else if(hm<1.6)msg="Bis zur Brust im Laub. Ein Spaziergang ist unmöglich.";else if(hm<5)msg="Du bist komplett verschüttet! Selbst Bäume stecken tief im Laub.";else msg="Nach "+y+" Jahren: ein Laubgebirge! Aber in echt sieht der Wald nicht so aus. Warum nicht?";T.textContent=msg;}
+  r.addEventListener("input",upd);upd();
+})();
+
+/* ===== M1 A2: Merkmals-Check ===== */
+const TRAITS=[["Zellwand aus Cellulose",[1,0,0]],["Zellwand aus Chitin",[0,1,0]],["Zellen ohne Zellwand",[0,0,1]],["hat Chlorophyll und betreibt Fotosynthese",[1,0,0]],["ernährt sich von Stoffen anderer Lebewesen",[0,1,1]],["speichert Zucker als Stärke",[1,0,0]],["speichert Zucker als Glykogen",[0,1,1]],["ortsfest (bewegt sich nicht von der Stelle)",[1,1,0]],["wächst mit feinen Fäden (Hyphen) durch den Boden",[0,1,0]],["vermehrt sich mit Sporen",[2,1,0]]];
+let sortState=S.sort||TRAITS.map(()=>[0,0,0]);
+function renderSort(){
+  const t=$("#sortTable");let h="<tr><th style='text-align:left'>Merkmal</th><th>🌱<br>Pflanze</th><th>🍄<br>Pilz</th><th>🐞<br>Tier</th></tr>";
+  TRAITS.forEach((tr,i)=>{h+="<tr id='tr"+i+"'><td>"+tr[0]+"</td>"+[0,1,2].map(k=>"<td style='text-align:center'><button class='tog"+(sortState[i][k]?" on":"")+"' data-s='"+i+","+k+"'>"+(sortState[i][k]?"✓":"")+"</button></td>").join("")+"</tr>";});
+  t.innerHTML=h;
+}
+$("#sortTable").addEventListener("click",e=>{const b=e.target.closest("[data-s]");if(!b)return;const[i,k]=b.dataset.s.split(",").map(Number);sortState[i][k]=sortState[i][k]?0:1;S.sort=sortState;save();renderSort();$("#sortFb").textContent="";});
+$("#sortCheck").onclick=()=>{let ok=0;TRAITS.forEach((tr,i)=>{const good=tr[1].every((v,k)=>v===2||v===sortState[i][k]);const row=$("#tr"+i);row.className=good?"ok":"bad";if(good)ok++;});
+  let msg=ok+" von "+TRAITS.length+" Zeilen richtig. ";msg+=ok===TRAITS.length?"🎉 Perfekt! Zählt jetzt die Gemeinsamkeiten: Pilz ↔ Pflanze und Pilz ↔ Tier.":"Rote Zeilen: diskutiert noch einmal (Hilfe 1 aufklappen!).";
+  if(sortState[9][1])msg+=" Hinweis: Auch Moose und Farne (Pflanzen) bilden Sporen, das Kreuz bei Pflanze ist also auch okay.";$("#sortFb").textContent=msg;};
+$("#sortReset").onclick=()=>{sortState=TRAITS.map(()=>[0,0,0]);S.sort=sortState;save();renderSort();$("#sortFb").textContent="";};
+renderSort();
+
+/* ===== M1 A3: Pilz-Animation ===== */
+(function(){
+  const svg=$("#pilzSvg");const G=320,X=330;
+  svg.innerHTML=`<defs><linearGradient id="soilG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a6243"/><stop offset="1" stop-color="#4f3523"/></linearGradient></defs>
+  <rect width="700" height="${G-120}" fill="#dcefff"/><rect y="${G-120}" width="700" height="120" fill="#eaf3dc"/>
+  <rect y="${G-130}" width="700" height="190" fill="url(#soilG)"/>
+  <path d="M0 ${G-130} q40 -10 80 0 t80 0 t80 0 t80 0 t80 0 t80 0 t80 0 t80 0 t80 0" fill="#c58a3d"/>
+  <g id="hy"></g><circle id="spore" cx="${X}" cy="${G-60}" r="5" fill="#f5e7b0" stroke="#7a5a00"/>
+  <g id="fk"></g><g id="sp"></g><g id="lb" font-size="16" font-weight="700"></g>`;
+  // Hyphen erzeugen
+  const R=rnd(7),segs=[];
+  const Q=[];for(let i=0;i<9;i++){const a=i*Math.PI*2/9+R()*.3;Q.push([X,G-60,a,44,0]);}
+  while(Q.length&&segs.length<380){const[x,y,a,len,gen]=Q.shift();let x2=x+Math.cos(a)*len,y2=y+Math.sin(a)*len*0.7;let na=a;if(y2<G-122||y2>G+52){y2=clamp(y2,G-122,G+52);na=-a;}x2=clamp(x2,10,690);segs.push({x,y,x2,y2,gen});if(gen<8){const n=gen<3?2:(R()<0.6?2:1);for(let i=0;i<n;i++)Q.push([x2,y2,na+(R()-.5)*1.2,len*(0.78+R()*0.15),gen+1]);}}
+  segs.sort((a,b)=>a.gen-b.gen);
+  const hy=svg.querySelector("#hy");
+  segs.forEach(s=>{s.el=el("line",{x1:s.x,y1:s.y,x2:s.x2,y2:s.y2,stroke:"#f7f2e3","stroke-width":Math.max(1,3-s.gen*0.3),"stroke-linecap":"round",opacity:0},hy);});
+  const fk=svg.querySelector("#fk");
+  const fg=el("g",{transform:`translate(${X} ${G-130}) scale(0)`},fk);
+  el("path",{d:"M-12 0 Q-14 -60 -9 -95 L9 -95 Q14 -60 12 0 Z",fill:"#f3ecdc",stroke:"#b9a98a","stroke-width":2},fg);
+  el("ellipse",{cx:0,cy:-55,rx:16,ry:5,fill:"#fff",stroke:"#b9a98a"},fg);
+  el("path",{d:"M-78 -95 Q-70 -170 0 -172 Q70 -170 78 -95 Z",fill:"#d6453d",stroke:"#9e2a23","stroke-width":2},fg);
+  for(let i=-6;i<=6;i++)el("line",{x1:i*12,y1:-95,x2:i*4,y2:-108,stroke:"#e9dcc0","stroke-width":2},fg);
+  [[-40,-130],[-10,-150],[25,-138],[50,-115],[-55,-108],[5,-118]].forEach(([x,y])=>el("circle",{cx:x,cy:y,r:7,fill:"#fff"},fg));
+  const sp=svg.querySelector("#sp");const spores=[];for(let i=0;i<40;i++){spores.push({c:el("circle",{r:2.5,fill:"#7a5a00",opacity:0},sp),t:Math.random(),dx:(Math.random()-.3)*260,dy:-Math.random()*90});}
+  const lb=svg.querySelector("#lb");
+  function label(x,y,tx,ty,text){const g=el("g",{},lb);el("line",{x1:x,y1:y,x2:tx,y2:ty,stroke:"#1d1d1d","stroke-width":1.5},g);el("circle",{cx:x,cy:y,r:3,fill:"#1d1d1d"},g);const r=el("rect",{x:tx-4,y:ty-16,width:text.length*9+10,height:22,rx:6,fill:"#fff",stroke:"#1d1d1d"},g);const t=el("text",{x:tx+2,y:ty,fill:"#1d1d1d"},g);t.textContent=text;return g;}
+  const L={hut:label(X+60,G-262,X+150,G-290,"Hut"),lam:label(X+30,G-229,X+150,G-232,"Lamellen"),stiel:label(X+10,G-170,X+150,G-170,"Stiel"),fk:label(X-75,G-245,X-260,G-290,"Fruchtkörper"),my:label(X-150,G-20,X-300,G+40,"Myzel"),hyp:label(X+160,G-40,X+210,G+40,"Hyphe"),spo:label(X+150,G-245,X+250,G-290,"Sporen"),spore0:label(X,G-60,X+80,G-100,"Spore")};
+  const r=$("#pilzRange"),T=$("#pilzText"),cb=$("#pilzLabels");let anim=null;
+  function upd(){const v=+r.value;const nH=Math.round(clamp((v-10)/55,0,1)*segs.length);segs.forEach((s,i)=>s.el.setAttribute("opacity",i<nH?0.95:0));
+    svg.querySelector("#spore").setAttribute("opacity",v<30?1:0);
+    const f=clamp((v-65)/20,0,1);fg.setAttribute("transform",`translate(${X} ${G-130}) scale(${f})`);
+    const show=cb.checked;const vis=(g,c)=>g.setAttribute("opacity",show&&c?1:0);
+    vis(L.spore0,v<30);vis(L.hyp,v>=12);vis(L.my,v>=45);vis(L.hut,f>0.95);vis(L.lam,f>0.95);vis(L.stiel,f>0.95);vis(L.fk,f>0.95);vis(L.spo,v>=88);
+    let t;if(v<10)t="🟡 Eine winzige Spore ist auf den feuchten Waldboden gefallen.";else if(v<35)t="🌱 Die Spore keimt: Ein feiner Pilzfaden wächst heraus und verzweigt sich.";else if(v<65)t="🕸️ Aus vielen Fäden entsteht ein riesiges, unsichtbares Geflecht im Boden. Das ist der eigentliche Pilz!";else if(v<88)t="🍄 Bei Wärme und Feuchtigkeit wächst aus dem Geflecht ein Teil über die Erde hinaus.";else t="💨 Unter dem Hut werden Millionen Sporen gebildet und vom Wind verbreitet. Der Kreislauf beginnt neu!";
+    T.textContent=t;
+    if(v>=88&&!anim){anim=requestAnimationFrame(loop);}if(v<88){spores.forEach(s=>s.c.setAttribute("opacity",0));if(anim){cancelAnimationFrame(anim);anim=null;}}}
+  function loop(){spores.forEach(s=>{s.t+=0.006;if(s.t>1)s.t=0;s.c.setAttribute("cx",X+(Math.random()-.5)*60*0+s.dx*s.t);s.c.setAttribute("cy",G-228+s.dy*s.t+Math.sin(s.t*12)*4);s.c.setAttribute("opacity",1-s.t);});anim=requestAnimationFrame(loop);}
+  r.addEventListener("input",upd);cb.addEventListener("change",upd);upd();
+})();
+
+/* ===== Pilz-Zeichnungen ===== */
+function shroomSVG(kind){
+  const w='<svg viewBox="0 0 200 150" xmlns="'+NS+'"><rect width="200" height="150" rx="14" fill="#eef4e3"/><path d="M0 130 Q100 118 200 130 V150 H0Z" fill="#a77b4f"/>';
+  const end="</svg>";
+  switch(kind){
+    case"fliegen":return w+'<path d="M90 130 Q88 90 92 70 L108 70 Q112 90 110 130Z" fill="#fbf7ef" stroke="#c9bda4"/><ellipse cx="100" cy="92" rx="13" ry="4" fill="#fff" stroke="#c9bda4"/><path d="M45 72 Q55 18 100 16 Q145 18 155 72Z" fill="#d6453d" stroke="#9e2a23" stroke-width="2"/>'+[[70,45],[95,30],[120,40],[138,60],[60,64],[105,55],[82,62]].map(p=>'<circle cx="'+p[0]+'" cy="'+p[1]+'" r="5" fill="#fff"/>').join("")+end;
+    case"stein":return w+'<path d="M78 130 Q66 100 86 76 L114 76 Q134 100 122 130Z" fill="#efe4c8" stroke="#bda97c"/><path d="M40 80 Q48 26 100 24 Q152 26 160 80 Q100 92 40 80Z" fill="#8a5a33" stroke="#5c3a1e" stroke-width="2"/><path d="M60 50 Q80 36 100 36" stroke="#a87448" stroke-width="5" fill="none" stroke-linecap="round"/>'+end;
+    case"pfiff":return w+'<path d="M94 130 Q92 105 90 88 L110 88 Q108 105 106 130Z" fill="#f4b636"/><path d="M50 50 Q100 70 150 50 Q140 80 110 92 L90 92 Q60 80 50 50Z" fill="#f2a71b" stroke="#c07d07" stroke-width="2"/>'+[0,1,2,3,4].map(i=>'<path d="M'+(70+i*15)+' 66 Q'+(92+i*4)+' 82 100 92" stroke="#d98e0b" fill="none"/>').join("")+end;
+    case"halli":return w+[[60,118,.8],[100,104,1],[140,116,.85],[82,124,.6],[122,126,.6]].map(([x,y,s])=>'<g transform="translate('+x+' '+y+') scale('+s+')"><path d="M-5 30 L-4 -10 L4 -10 L5 30Z" fill="#e6cc96"/><path d="M-28 -8 Q-24 -36 0 -38 Q24 -36 28 -8Z" fill="#c89a47" stroke="#8a6420" stroke-width="2"/><circle cx="-8" cy="-24" r="2" fill="#6b4a12"/><circle cx="8" cy="-28" r="2" fill="#6b4a12"/><circle cx="2" cy="-18" r="2" fill="#6b4a12"/></g>').join("")+end;
+    case"zunder":return w+'<rect x="20" y="0" width="70" height="150" fill="#9b9488"/><path d="M28 0 V150 M44 0 V150 M60 0 V150 M76 0 V150" stroke="#837c70" stroke-width="2"/><path d="M88 55 Q160 52 165 80 Q160 100 88 100Z" fill="#8f8a80" stroke="#55514a" stroke-width="2"/><path d="M92 65 Q150 64 158 78 M92 78 Q150 78 160 88 M92 90 Q140 92 155 96" stroke="#6d685f" fill="none" stroke-width="2"/><path d="M88 100 Q130 104 150 98" stroke="#c8a77a" stroke-width="4" fill="none"/>'+end;
+    case"schwefel":return w+'<rect x="10" y="108" width="180" height="26" rx="12" fill="#7b5532"/>'+[[55,98,.8],[85,90,1],[120,94,.9],[150,100,.7],[100,104,.6]].map(([x,y,s])=>'<g transform="translate('+x+' '+y+') scale('+s+')"><path d="M-4 18 L-3 -8 L3 -8 L4 18Z" fill="#e8d36a"/><path d="M-24 -6 Q-20 -30 0 -32 Q20 -30 24 -6Z" fill="#f0d23a" stroke="#b9971b" stroke-width="2"/><ellipse cx="0" cy="-24" rx="8" ry="4" fill="#e09a2b"/></g>').join("")+end;
+  }
+}
+const SHROOMS=[["fliegen","Fliegenpilz","🤝 Symbiose (Mykorrhiza) mit Birken und Fichten. Sehr giftig! Rote Warnfarbe mit weißen Flocken."],["stein","Steinpilz","🤝 Symbiose (Mykorrhiza) mit Fichten, Buchen und Kiefern. Unter dem Hut: Röhren statt Lamellen."],["pfiff","Pfifferling","🤝 Symbiose (Mykorrhiza) mit Fichten und Buchen. Dottergelb, unter dem Hut stumpfe Leisten."],["halli","Hallimasch","🧛 Parasit an lebenden Bäumen, danach ♻️ Zersetzer von totem Holz. Wächst in Büscheln. Größtes Lebewesen der Erde!"],["zunder","Zunderschwamm","🧛 Parasit an geschwächten Buchen und Birken, danach ♻️ Zersetzer. Hufförmig, mehrjährig. Früher zum Feuermachen genutzt."],["schwefel","Grünblättriger Schwefelkopf","♻️ Zersetzer auf totem Holz und Baumstümpfen. Schwefelgelb, giftig, wächst in großen Büscheln."]];
+(function(){const c=$("#shroomCards");SHROOMS.forEach(([k,n,t])=>{const d=document.createElement("div");d.className="flip";d.innerHTML='<div class="flip-in"><div class="flip-f">'+shroomSVG(k)+'<b>'+n+'</b><span class="note" style="text-align:center">antippen zum Umdrehen</span></div><div class="flip-b"><b>'+n+'</b><p>'+t+'</p><span class="note">Wieder antippen zum Zurückdrehen</span></div></div>';d.onclick=()=>d.classList.toggle("on");c.appendChild(d);});})();
+
+/* ===== M2 A2: Lebensweisen ===== */
+const CASES=[["Ich wachse auf einem umgestürzten, toten Baumstamm und baue das Holz ab.","z","Richtig: Das Holz ist tot, also Zersetzer. (Schwefelkopf)"],["Meine Fäden umspinnen die Wurzeln einer Birke. Ich bekomme Zucker, sie bekommt Wasser und Mineralstoffe.","s","Richtig: Beide haben einen Vorteil, also Symbiose (Mykorrhiza). (Fliegenpilz)"],["Ich dringe in eine lebende Buche ein und ernähre mich von ihr. Die Buche wird immer schwächer.","p","Richtig: Der Baum lebt und hat einen Schaden, also Parasit. (Zunderschwamm)"],["Ich bin der grün-graue Flaum auf dem vergessenen Brot in deiner Brotdose.","z","Richtig: Brot ist totes organisches Material, also Zersetzer. (Schimmelpilz)"],["Ich lebe mit einer Alge zusammen als Flechte auf einem Stein. Die Alge liefert Zucker, ich schütze sie vor dem Austrocknen.","s","Richtig: Beide profitieren, also Symbiose."],["Ich jucke zwischen deinen Zehen und ernähre mich von deiner Haut.","p","Richtig: Du lebst und hast einen Schaden, also Parasit. (Fußpilz)"]];
+const LW={z:"♻️ Zersetzer",s:"🤝 Symbiose",p:"🧛 Parasit"};
+S.lw=S.lw||{};
+function renderLW(){const c=$("#lebensweise");c.innerHTML="";let ok=0;CASES.forEach((cs,i)=>{const d=document.createElement("div");d.className="choice-card";const ans=S.lw[i];
+  d.innerHTML="<b>Fall "+(i+1)+":</b> „"+cs[0]+"“<div class='opts'>"+Object.keys(LW).map(k=>"<button class='opt"+(ans===k?(k===cs[1]?" right":" wrong"):"")+"' data-lw='"+i+","+k+"'>"+LW[k]+"</button>").join("")+"</div><div class='fb'>"+(ans?(ans===cs[1]?"✅ "+cs[2]:"❌ Noch nicht. Ist das andere Lebewesen tot oder lebendig? Wer hat einen Vorteil?"):"")+"</div>";
+  if(ans===cs[1])ok++;c.appendChild(d);});$("#lwScore").textContent=ok+" / "+CASES.length+" richtig"+(ok===CASES.length?" 🎉":"");}
+$("#lebensweise").addEventListener("click",e=>{const b=e.target.closest("[data-lw]");if(!b)return;const[i,k]=b.dataset.lw.split(",");S.lw[i]=k;save();renderLW();});
+renderLW();
+
+/* ===== M2 A3: Mykorrhiza ===== */
+(function(){
+  const svg=$("#mykSvg");
+  svg.innerHTML=`<rect width="700" height="190" fill="#dcefff"/><circle cx="620" cy="50" r="28" fill="#ffd34d"/>
+  <rect y="190" width="700" height="230" fill="#7a5236"/>
+  <ellipse cx="300" cy="80" rx="150" ry="70" fill="#5d9a45"/><ellipse cx="230" cy="100" rx="80" ry="50" fill="#6fae52"/><ellipse cx="370" cy="95" rx="80" ry="50" fill="#4f8a3a"/>
+  <rect x="285" y="110" width="30" height="90" fill="#6d4c33"/>
+  <g id="roots" stroke="#c9a36b" stroke-linecap="round" fill="none"></g>
+  <g id="hyph" stroke="#f5efdf" stroke-width="1.6" fill="none" opacity=".9"></g>
+  <g id="parts"></g>
+  <g font-size="15" font-weight="700" fill="#fff"><text x="20" y="410">Boden mit Wasser & Mineralstoffen</text></g>
+  <g font-size="15" font-weight="700" fill="#1d1d1d"><text x="470" y="120">Blätter: Fotosynthese → Zucker</text></g>
+  <g id="mlbl" font-size="15" font-weight="700"><rect x="470" y="300" width="200" height="54" rx="10" fill="#fff" opacity=".9"/><text x="480" y="322" fill="#7a5236">— Baumwurzel</text><text x="480" y="344" fill="#555">— Pilzfäden (Myzel)</text></g>`;
+  const roots=svg.querySelector("#roots"),hyph=svg.querySelector("#hyph");
+  const rootPaths=["M300 200 C300 250 240 270 180 300 S120 360 90 380","M300 200 C305 260 330 300 360 340 S410 380 440 395","M300 200 C290 240 270 300 260 360","M300 200 C320 230 400 250 470 270"];
+  rootPaths.forEach(d=>el("path",{d:d,"stroke-width":7},roots));
+  const R=rnd(3);for(let i=0;i<70;i++){const x=60+R()*560,y=230+R()*170;let d="M"+x.toFixed(0)+" "+y.toFixed(0);let cx=x,cy=y;for(let k=0;k<4;k++){cx+=(R()-.5)*60;cy+=(R()-.5)*40;d+=" L"+cx.toFixed(0)+" "+clamp(cy,200,415).toFixed(0);}el("path",{d:d},hyph);}
+  const sugarD="M300 120 L300 200 C300 250 240 270 180 300 S120 360 90 380 L60 395";
+  const waterD="M520 400 C480 330 420 280 360 340 C330 300 305 260 300 200 L300 110";
+  const sp=el("path",{d:sugarD,fill:"none",stroke:"none"},svg),wp=el("path",{d:waterD,fill:"none",stroke:"none"},svg);
+  const wp2=el("path",{d:"M40 300 C80 330 150 320 180 300 C240 270 300 250 300 200 L300 110",fill:"none",stroke:"none"},svg);
+  const parts=svg.querySelector("#parts");const P=[];
+  for(let i=0;i<10;i++)P.push({type:"s",path:sp,t:i/10,c:el("circle",{r:6,fill:"#f08a24",stroke:"#fff","stroke-width":2,opacity:0},parts)});
+  for(let i=0;i<14;i++)P.push({type:"w",path:i%2?wp:wp2,t:i/14,c:el("circle",{r:6,fill:"#2a78d6",stroke:"#fff","stroke-width":2,opacity:0},parts)});
+  let on={s:false,w:false},raf=null;
+  function loop(){P.forEach(p=>{if(!on[p.type]){p.c.setAttribute("opacity",0);return;}p.t=(p.t+0.003)%1;const L=p.path.getTotalLength();const pt=p.path.getPointAtLength(p.t*L);p.c.setAttribute("cx",pt.x);p.c.setAttribute("cy",pt.y);p.c.setAttribute("opacity",1);});raf=(on.s||on.w)?requestAnimationFrame(loop):null;}
+  function txt(){const T=$("#mykText");if(on.s&&on.w)T.textContent="🔁 Ein Tauschgeschäft! Orange: Zucker vom Baum zum Pilz. Blau: Wasser und Mineralstoffe vom Pilz zum Baum.";else if(on.s)T.textContent="🍬 Orange Punkte: Zucker aus den Blättern wandert in die Wurzeln, wo die Pilzfäden ihn aufnehmen.";else if(on.w)T.textContent="💧 Blaue Punkte: Die Pilzfäden sammeln Wasser und Mineralstoffe aus dem ganzen Boden und geben sie an die Wurzel ab.";else T.textContent="Tippt auf die Knöpfe, um die Stoffströme zu sehen.";}
+  $("#mykSugar").onclick=function(){on.s=!on.s;this.textContent=on.s?"🍬 Zucker aus":"🍬 Zucker ein";txt();if(!raf)loop();};
+  $("#mykWater").onclick=function(){on.w=!on.w;this.textContent=on.w?"💧 Wasser & Mineralstoffe aus":"💧 Wasser & Mineralstoffe ein";txt();if(!raf)loop();};
+})();
+
+/* ===== Charts ===== */
+function barChart(host,cfg){
+  const W=640,H=320,m={l:64,r:20,t:24,b:56};const iw=W-m.l-m.r,ih=H-m.t-m.b;
+  host.innerHTML='<div class="tip"></div>';const tip=host.querySelector(".tip");
+  const svg=el("svg",{viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":cfg.title},null);host.insertBefore(svg,tip);
+  const tt=el("text",{x:m.l,y:16,"font-size":14,"font-weight":700,fill:"#0b0b0b"},svg);tt.textContent=cfg.title;
+  const y=v=>m.t+ih-v/cfg.max*ih;
+  for(let v=0;v<=cfg.max;v+=cfg.step){el("line",{x1:m.l,x2:W-m.r,y1:y(v),y2:y(v),stroke:"#e8e6df"},svg);const t=el("text",{x:m.l-8,y:y(v)+4,"text-anchor":"end","font-size":12,fill:"#52514e"},svg);t.textContent=String(v).replace(".",",");}
+  const yl=el("text",{transform:`translate(16 ${m.t+ih/2}) rotate(-90)`,"text-anchor":"middle","font-size":13,fill:"#52514e"},svg);yl.textContent=cfg.yLabel;
+  const bw=90,gap=iw/cfg.data.length;
+  cfg.data.forEach((d,i)=>{const x=m.l+gap*i+gap/2-bw/2,top=y(d[1]),h=m.t+ih-top;
+    el("path",{d:`M${x} ${m.t+ih} V${top+4} Q${x} ${top} ${x+4} ${top} H${x+bw-4} Q${x+bw} ${top} ${x+bw} ${top+4} V${m.t+ih}Z`,fill:cfg.color},svg);
+    const lab=el("text",{x:x+bw/2,y:m.t+ih+22,"text-anchor":"middle","font-size":13,fill:"#0b0b0b"},svg);lab.textContent=d[0];
+    const val=el("text",{x:x+bw/2,y:top-8,"text-anchor":"middle","font-size":13,"font-weight":700,fill:"#0b0b0b",opacity:0},svg);val.textContent=String(d[1]).replace(".",",")+" g";
+    const hit=el("rect",{x:x-20,y:m.t,width:bw+40,height:ih,fill:"transparent",style:"cursor:pointer"},svg);
+    const show=()=>{val.setAttribute("opacity",1);tip.style.display="block";tip.innerHTML="<b>"+d[0]+"</b><br>Trockenmasse: "+String(d[1]).replace(".",",")+" g";const r=host.getBoundingClientRect(),sr=svg.getBoundingClientRect();tip.style.left=((x+bw/2)/W*sr.width+sr.left-r.left-50)+"px";tip.style.top=((top)/H*sr.height+sr.top-r.top-60)+"px";};
+    hit.addEventListener("pointerenter",show);hit.addEventListener("click",show);hit.addEventListener("pointerleave",()=>{tip.style.display="none";});
+  });
+  el("line",{x1:m.l,x2:W-m.r,y1:m.t+ih,y2:m.t+ih,stroke:"#8a887f"},svg);
+  const det=document.createElement("details");det.innerHTML="<summary>Werte als Tabelle</summary><div><table class='data'><tr><th>Gruppe</th><th>Trockenmasse (g)</th></tr>"+cfg.data.map(d=>"<tr><td>"+d[0]+"</td><td>"+String(d[1]).replace(".",",")+"</td></tr>").join("")+"</table></div>";host.appendChild(det);
+}
+barChart($("#barChart"),{title:"Trockenmasse von Kiefernkeimlingen nach 6 Monaten",yLabel:"Trockenmasse in g",max:3.5,step:0.5,color:"#2a78d6",data:[["ohne Mykorrhiza",1.2],["mit Mykorrhiza",3.0]]});
+
+function lineChart(host,cfg){
+  const W=660,H=360,m={l:64,r:110,t:20,b:56};const iw=W-m.l-m.r,ih=H-m.t-m.b;
+  host.innerHTML='<div class="legend">'+cfg.series.map(s=>'<span style="--c:'+s.color+'">'+s.name+'</span>').join("")+'</div><div class="tip"></div>';
+  const tip=host.querySelector(".tip");const svg=el("svg",{viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":cfg.title});host.insertBefore(svg,tip);
+  const x=i=>m.l+i/(cfg.x.length-1)*iw,y=v=>m.t+ih-v/100*ih;
+  for(let v=0;v<=100;v+=25){el("line",{x1:m.l,x2:m.l+iw,y1:y(v),y2:y(v),stroke:"#e8e6df"},svg);const t=el("text",{x:m.l-8,y:y(v)+4,"text-anchor":"end","font-size":12,fill:"#52514e"},svg);t.textContent=v+" %";}
+  cfg.x.forEach((xv,i)=>{const t=el("text",{x:x(i),y:m.t+ih+20,"text-anchor":"middle","font-size":12,fill:"#52514e"},svg);t.textContent=xv;});
+  const xl=el("text",{x:m.l+iw/2,y:H-10,"text-anchor":"middle","font-size":13,fill:"#52514e"},svg);xl.textContent=cfg.xLabel;
+  const yl=el("text",{transform:`translate(16 ${m.t+ih/2}) rotate(-90)`,"text-anchor":"middle","font-size":13,fill:"#52514e"},svg);yl.textContent=cfg.yLabel;
+  el("line",{x1:m.l,x2:m.l+iw,y1:m.t+ih,y2:m.t+ih,stroke:"#8a887f"},svg);
+  const cross=el("line",{y1:m.t,y2:m.t+ih,stroke:"#8a887f","stroke-dasharray":"3 3",opacity:0},svg);
+  cfg.series.forEach(s=>{el("path",{d:s.values.map((v,i)=>(i?"L":"M")+x(i)+" "+y(v)).join(" "),fill:"none",stroke:s.color,"stroke-width":2.5,"stroke-linejoin":"round"},svg);
+    s.values.forEach((v,i)=>el("circle",{cx:x(i),cy:y(v),r:5,fill:s.color,stroke:"#fcfcfb","stroke-width":2},svg));
+    const lv=s.values[s.values.length-1];const t=el("text",{x:x(cfg.x.length-1)+10,y:y(lv)+4,"font-size":13,fill:"#0b0b0b"},svg);t.textContent=s.short+" ("+lv+" %)";});
+  const hit=el("rect",{x:m.l-10,y:m.t,width:iw+20,height:ih,fill:"transparent"},svg);
+  function move(ev){const sr=svg.getBoundingClientRect(),r=host.getBoundingClientRect();const px=(ev.clientX-sr.left)/sr.width*W;const i=clamp(Math.round((px-m.l)/iw*(cfg.x.length-1)),0,cfg.x.length-1);
+    cross.setAttribute("x1",x(i));cross.setAttribute("x2",x(i));cross.setAttribute("opacity",1);
+    tip.style.display="block";tip.innerHTML="<b>nach "+cfg.x[i]+" Monaten</b><br>"+cfg.series.map(s=>'<span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:'+s.color+';margin-right:6px"></span>'+s.short+": "+s.values[i]+" %").join("<br>");
+    const lx=x(i)/W*sr.width+sr.left-r.left;tip.style.left=(lx>r.width*0.6?lx-170:lx+14)+"px";tip.style.top=(m.t/H*sr.height+sr.top-r.top+20)+"px";}
+  hit.addEventListener("pointermove",move);hit.addEventListener("pointerdown",move);hit.addEventListener("pointerleave",()=>{tip.style.display="none";cross.setAttribute("opacity",0);});
+  const det=document.createElement("details");det.innerHTML="<summary>Werte als Tabelle</summary><div style='overflow-x:auto'><table class='data'><tr><th>Monate</th>"+cfg.x.map(v=>"<th>"+v+"</th>").join("")+"</tr>"+cfg.series.map(s=>"<tr><td>"+s.name+"</td>"+s.values.map(v=>"<td>"+v+" %</td>").join("")+"</tr>").join("")+"</table></div>";host.appendChild(det);
+}
+lineChart($("#lineChart"),{title:"Laubabbau in Netzbeuteln",x:[0,3,6,9,12],xLabel:"Zeit in Monaten",yLabel:"verbleibendes Laub in %",series:[
+  {name:"feine Maschen (nur Pilze & Bakterien)",short:"fein",color:"#2a78d6",values:[100,92,85,79,74]},
+  {name:"mittlere Maschen (+ kleine Tiere)",short:"mittel",color:"#eb6834",values:[100,85,72,61,52]},
+  {name:"grobe Maschen (alle Bodentiere)",short:"grob",color:"#1baf7a",values:[100,75,55,40,28]}]});
+
+/* ===== Bodentiere: Zeichnungen (viewBox 0 0 120 60) ===== */
+function legs(x0,x1,n,yTop,yBot,len,col,w,bend){let s="";for(let i=0;i<n;i++){const x=n===1?(x0+x1)/2:x0+(x1-x0)*i/(n-1);s+='<path d="M'+x+' '+yTop+' q'+(bend||-3)+' '+(-len*0.6)+' '+(bend||-3)*2+' '+(-len)+'" stroke="'+col+'" stroke-width="'+w+'" fill="none" stroke-linecap="round"/>';s+='<path d="M'+x+' '+yBot+' q'+(bend||-3)+' '+(len*0.6)+' '+(bend||-3)*2+' '+len+'" stroke="'+col+'" stroke-width="'+w+'" fill="none" stroke-linecap="round"/>';}return s;}
+const ANIMALS={
+  regenwurm:()=>'<path d="M8 38 C25 18 40 50 60 32 S95 20 112 30" stroke="#d98a8a" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M8 38 C25 18 40 50 60 32 S95 20 112 30" stroke="#b86868" stroke-width="10" fill="none" stroke-dasharray="1.2 4.5"/><path d="M78 26 C82 24 86 23 90 23" stroke="#c86f6f" stroke-width="12" fill="none" stroke-linecap="round"/>',
+  schnecke:()=>'<path d="M15 44 Q20 34 50 36 L95 38 Q108 40 104 46 Z" fill="#c9a27a" stroke="#8a6a46"/><path d="M95 38 L100 22 M90 38 L92 24" stroke="#8a6a46" stroke-width="2"/><circle cx="100" cy="21" r="2" fill="#3b2a1a"/><circle cx="92" cy="23" r="2" fill="#3b2a1a"/><circle cx="52" cy="28" r="17" fill="#c27a3c" stroke="#7a4a20" stroke-width="2"/><path d="M52 28 m0 -11 a11 11 0 1 1 -10 7 a7 7 0 1 1 8 5 a3 3 0 1 1 3 -3" fill="none" stroke="#7a4a20" stroke-width="2"/>',
+  assel:()=>legs(36,76,7,20,40,9,"#6c6c6c",2,-2)+'<ellipse cx="60" cy="30" rx="30" ry="12" fill="#8e8e8e" stroke="#555" stroke-width="1.5"/>'+[42,48,54,60,66,72,78].map(x=>'<path d="M'+x+' 19 Q'+(x+2)+' 30 '+x+' 41" stroke="#666" fill="none"/>').join("")+'<path d="M90 27 q10 -6 18 -12 M90 33 q10 6 18 12" stroke="#555" stroke-width="2" fill="none"/><path d="M30 27 l-8 -4 M30 33 l-8 4" stroke="#555" stroke-width="2"/>',
+  doppelfuesser:()=>{let l="";for(let i=0;i<16;i++){const x=16+i*5.5;l+='<path d="M'+x+' 25 l-2 -7 M'+(x+2.5)+' 25 l-2 -7 M'+x+' 35 l-2 7 M'+(x+2.5)+' 35 l-2 7" stroke="#5a3d2b" stroke-width="1.2"/>';}return l+'<rect x="12" y="24" width="96" height="12" rx="6" fill="#4b2f20"/>'+Array.from({length:16},(_,i)=>'<line x1="'+(17+i*5.5)+'" y1="24" x2="'+(17+i*5.5)+'" y2="36" stroke="#6b4a36"/>').join("")+'<path d="M108 27 l6 -5 M108 33 l6 5" stroke="#4b2f20" stroke-width="1.5"/>';},
+  hundertfuesser:()=>{let l="";for(let i=0;i<15;i++){const x=16+i*6;l+='<path d="M'+x+' 27 q-4 -7 -8 -11 M'+x+' 33 q-4 7 -8 11" stroke="#b5651d" stroke-width="1.6" fill="none"/>';}return l+'<rect x="12" y="26" width="92" height="8" rx="3" fill="#c97a2e"/>'+Array.from({length:15},(_,i)=>'<line x1="'+(19+i*6)+'" y1="26" x2="'+(19+i*6)+'" y2="34" stroke="#9a5512"/>').join("")+'<path d="M104 27 q8 -10 14 -16 M104 33 q8 10 14 16" stroke="#9a5512" stroke-width="1.5" fill="none"/><path d="M104 28 q5 0 6 3 q-1 3 -6 3" stroke="#6b3a0a" stroke-width="2" fill="none"/>';},
+  spinne:()=>{const L=[[-1,-1],[-1,-0.4],[-1,0.4],[-1,1]];let s="";[[70,30]].forEach(([cx,cy])=>{[-1,1].forEach(side=>{for(let k=0;k<4;k++){const ang=(-60+k*35)*Math.PI/180;const dx=Math.cos(ang)*26*side*-1,dy=Math.sin(ang)*22;s+='<path d="M'+cx+' '+cy+' l'+(dx*0.5).toFixed(1)+' '+(side*-14+dy*0.2).toFixed(1)+' l'+(dx*0.6).toFixed(1)+' '+(side*-6+dy*0.4).toFixed(1)+'" stroke="#3a3a3a" stroke-width="2" fill="none" stroke-linecap="round"/>';}});});return s+'<ellipse cx="44" cy="30" rx="18" ry="13" fill="#5a4a3a"/><path d="M34 30 h20" stroke="#8a7a62" stroke-width="2" stroke-dasharray="3 2"/><circle cx="70" cy="30" r="10" fill="#3f3328"/><circle cx="78" cy="27" r="1.5" fill="#fff"/><circle cx="78" cy="33" r="1.5" fill="#fff"/>';},
+  springschwanz:()=>legs(52,66,3,25,35,8,"#566b8a",1.8,-2)+'<path d="M40 34 q-12 6 -20 2 M40 35 q-12 9 -20 8" stroke="#566b8a" stroke-width="1.8" fill="none"/><ellipse cx="60" cy="30" rx="22" ry="6" fill="#7f95b5"/><circle cx="84" cy="30" r="5" fill="#6a80a2"/><path d="M88 28 q8 -8 14 -10 M88 32 q8 8 14 10" stroke="#566b8a" stroke-width="1.5" fill="none"/>',
+  milbe:()=>legs(50,70,4,26,34,10,"#7a2a14",2,-2)+'<ellipse cx="60" cy="30" rx="14" ry="11" fill="#a33a1c"/><ellipse cx="56" cy="26" rx="5" ry="3" fill="#c96a4c"/><circle cx="76" cy="30" r="4" fill="#7a2a14"/>',
+  laufkaefer:()=>legs(48,74,3,22,38,14,"#222",2.2,-4)+'<ellipse cx="54" cy="30" rx="26" ry="12" fill="#1f2a24"/><path d="M30 30 h50" stroke="#4a7a5a" stroke-width="1.5"/><path d="M36 22 q16 -4 36 0 M36 38 q16 4 36 0" stroke="#3a5a48" fill="none"/><rect x="78" y="23" width="12" height="14" rx="5" fill="#222"/><circle cx="96" cy="30" r="6" fill="#222"/><path d="M100 26 q8 -8 16 -10 M100 34 q8 8 16 10" stroke="#222" stroke-width="1.5" fill="none"/>'
+};
+const AN_INFO={regenwurm:["Regenwurm","Ringelwürmer","♻️ Zersetzer","frisst Laubreste und Erde, zieht Blätter in seine Gänge"],schnecke:["Schnecke","Weichtiere","♻️ Zersetzer","raspelt Laub, Pilze und Pflanzenreste"],assel:["Assel","Krebstiere (14 Beine)","♻️ Zersetzer","frisst totes Laub und Holz"],doppelfuesser:["Doppelfüßer (Tausendfüßer)","Tausendfüßer","♻️ Zersetzer","frisst totes Laub; 2 Beinpaare pro Körperring"],hundertfuesser:["Hundertfüßer","Tausendfüßer","🦂 Räuber","jagt Springschwänze und Asseln mit Giftklauen; 1 Beinpaar pro Körperring"],spinne:["Spinne","Spinnentiere (8 Beine)","🦂 Räuber","jagt kleine Insekten und Springschwänze"],springschwanz:["Springschwanz","Sechsfüßer (Verwandte der Insekten)","♻️ Zersetzer","frisst Pilzfäden und Laubreste; Sprunggabel"],milbe:["Milbe","Spinnentiere (8 Beine)","♻️ Zersetzer","viele Arten (Hornmilben) fressen Laubreste, manche sind Räuber"],laufkaefer:["Laufkäfer","Insekten (6 Beine)","🦂 Räuber","jagt nachts Schnecken, Würmer und Insekten"]};
+function animalSVG(k,extra){return '<svg viewBox="0 0 120 60" xmlns="'+NS+'" '+(extra||"")+'>'+ANIMALS[k]()+'</svg>';}
+
+/* ===== M3 A1: Streu-Suchbild ===== */
+const STREU=[["assel",90,90,1.1],["regenwurm",300,70,1.4],["hundertfuesser",520,95,1.2],["springschwanz",150,250,.7],["schnecke",360,230,1.1],["spinne",560,250,1],["doppelfuesser",120,350,1.2],["laufkaefer",350,355,1],["milbe",590,360,.6]];
+function buildStreu(){
+  const svg=$("#streuSvg");svg.innerHTML='<rect width="700" height="420" fill="#4a3322"/>';
+  const R=rnd(Math.floor(Math.random()*1e6)+1);
+  for(let i=0;i<120;i++)el("circle",{cx:R()*700,cy:R()*420,r:1+R()*3,fill:["#3a2618","#5c4030","#6b4a33"][i%3]},svg);
+  const ag=el("g",{},svg),lg=el("g",{},svg);
+  STREU.forEach(([k,x,y,s],i)=>{const g=el("g",{transform:`translate(${x-60*s} ${y-30*s}) scale(${s})`,style:"cursor:pointer","data-a":i},ag);g.innerHTML=ANIMALS[k]();const nb=el("g",{transform:`translate(${x+40} ${y-34})`},ag);el("circle",{r:13,fill:"#fff",stroke:"#2b2a26","stroke-width":2},nb);const t=el("text",{"text-anchor":"middle",y:5,"font-size":15,"font-weight":800,fill:"#2b2a26"},nb);t.textContent=i+1;g.dataset.nb="1";});
+  const cols=["#c9782a","#e0923a","#a85f1f","#d9a441","#b5482a","#8f6a2a","#e2b04a","#9c3d1f"];
+  const leafPos=[];STREU.forEach(([k,x,y])=>{leafPos.push([x-30,y-10],[x+20,y+5],[x,y-20],[x+40,y-34]);});
+  for(let i=0;i<55;i++)leafPos.push([R()*700,R()*420]);
+  leafPos.sort(()=>R()-.5).forEach(([x,y])=>{const sz=55+R()*35,rot=R()*360,c=cols[Math.floor(R()*cols.length)];
+    const g=el("g",{transform:`translate(${x} ${y}) rotate(${rot})`,style:"cursor:pointer;transition:transform .5s, opacity .5s"},lg);
+    el("path",{d:`M${-sz} 0 Q${-sz*.3} ${-sz*.55} ${sz*.6} ${-sz*.1} Q${sz} 0 ${sz*.6} ${sz*.1} Q${-sz*.3} ${sz*.55} ${-sz} 0Z`,fill:c,stroke:"rgba(0,0,0,.25)"},g);
+    el("path",{d:`M${-sz} 0 L${sz*.8} 0`,stroke:"rgba(0,0,0,.25)","stroke-width":2},g);
+    for(let k=-3;k<=3;k++){if(k)el("path",{d:`M${k*sz*.2} 0 l${sz*.15} ${k>0?-sz*.18:sz*.18}`,stroke:"rgba(0,0,0,.18)"},g);}
+    g.addEventListener("click",()=>{g.style.opacity=0;g.setAttribute("transform",`translate(${x+(R()-.5)*300} ${y-200}) rotate(${rot+180})`);g.style.pointerEvents="none";setTimeout(()=>g.remove(),550);});
+  });
+  const found=new Set();
+  ag.querySelectorAll("[data-a]").forEach(g=>g.addEventListener("click",()=>{const i=+g.dataset.a;found.add(i);$("#streuCount").textContent="Gefunden: "+found.size+" / 9"+(found.size===9?" 🎉 Alle gefunden!":"");
+    $("#lupe").innerHTML=animalSVG(STREU[i][0])+'<div><b style="font-size:1.4rem">Tier Nr. '+(i+1)+'</b><br>Zählt die Beine! Achtet auf Körperform, Fühler und Körperringe.<br><span class="note">Den Namen findet ihr mit dem Bestimmungsschlüssel (A2).</span></div>';}));
+}
+buildStreu();$("#streuReset").onclick=buildStreu;
+
+/* ===== M3 A2: Bestimmungsschlüssel ===== */
+const KEYQ={
+  q1:["Hat das Tier Beine?",[["Nein, keine Beine","q2"],["Ja, es hat Beine","q3"]]],
+  q2:["Wie sieht der Körper aus?",[["Lang und geringelt (viele Ringe), ohne Fühler","regenwurm"],["Weich mit Fühlern, oft mit Gehäuse","schnecke"]]],
+  q3:["Wie viele Beine hat das Tier?",[["6 Beine","q4"],["8 Beine","q5"],["14 Beine","assel"],["viel mehr als 14 Beine","q6"]]],
+  q4:["Wie sieht der Rücken aus?",[["Harte, glänzende Deckflügel","laufkaefer"],["Winzig, weich, mit Sprunggabel am Hinterende","springschwanz"]]],
+  q5:["Wie ist der Körper gebaut?",[["Deutlich in zwei Teile geteilt (Vorder- und Hinterkörper)","spinne"],["Rundlich, nicht deutlich geteilt, winzig","milbe"]]],
+  q6:["Wie viele Beinpaare sitzen an einem Körperring?",[["2 Beinpaare pro Ring (Körper rundlich)","doppelfuesser"],["1 Beinpaar pro Ring (Körper flach, lange Fühler)","hundertfuesser"]]]
+};
+let keyPath=[];
+function renderKey(node){const box=$("#keyBox");node=node||"q1";
+  const pathTxt=keyPath.length?"Euer Weg: "+keyPath.join(" → "):"Start";
+  if(KEYQ[node]){const[q,opts]=KEYQ[node];box.innerHTML='<div class="key-path">'+pathTxt+'</div><div class="key-q">'+q+'</div><div class="key-btns">'+opts.map(o=>'<button data-k="'+o[1]+'" data-l="'+o[0].replace(/"/g,"")+'">'+o[0]+'</button>').join("")+'</div>'+(keyPath.length?'<p><button class="btn light" id="keyRestart">↺ Von vorn</button></p>':"");}
+  else{const inf=AN_INFO[node];box.innerHTML='<div class="key-path">'+pathTxt+'</div><div class="key-res">'+animalSVG(node)+'<div><div style="font-size:1.5rem;font-weight:800">'+inf[0]+'</div><div>Tiergruppe: <b>'+inf[1]+'</b></div><div>Rolle: <b>'+inf[2]+'</b></div><div class="note">'+inf[3]+'</div></div></div><p><button class="btn green" id="keyRestart">Nächstes Tier bestimmen ↺</button></p>';}
+  const rs=$("#keyRestart");if(rs)rs.onclick=()=>{keyPath=[];renderKey("q1");};
+}
+$("#keyBox").addEventListener("click",e=>{const b=e.target.closest("[data-k]");if(!b)return;keyPath.push(b.dataset.l.split(" ")[0]+(b.dataset.l.split(" ")[1]?" "+b.dataset.l.split(" ")[1]:""));renderKey(b.dataset.k);});
+renderKey("q1");
+(function(){const names=Object.keys(AN_INFO).map(k=>AN_INFO[k][0]).sort();
+  let h="<tr><th>Nr.</th><th>Name</th><th>Rolle</th></tr>";
+  STREU.forEach((s,i)=>{h+="<tr id='idr"+i+"'><td><b>"+(i+1)+"</b></td><td><select data-id='n"+i+"'><option value=''>– wählen –</option>"+names.map(n=>"<option>"+n+"</option>").join("")+"</select></td><td><select data-id='r"+i+"'><option value=''>– wählen –</option><option>♻️ Zersetzer</option><option>🦂 Räuber</option></select></td></tr>";});
+  $("#idTable").innerHTML=h;S.id=S.id||{};
+  $$("#idTable select").forEach(s=>{if(S.id[s.dataset.id])s.value=S.id[s.dataset.id];s.onchange=()=>{S.id[s.dataset.id]=s.value;save();};});
+  $("#idCheck").onclick=()=>{let ok=0;STREU.forEach((s,i)=>{const inf=AN_INFO[s[0]];const n=$("[data-id='n"+i+"']").value,r=$("[data-id='r"+i+"']").value;const good=n===inf[0]&&r===inf[2];$("#idr"+i).style.background=good?"#e3f4da":"#fde3e0";if(good)ok++;});
+    $("#idFb").textContent=ok+" / 9 Tiere komplett richtig. "+(ok===9?"🎉 Bodendetektiv-Niveau! Wie viele der 9 Tiere sind Zersetzer?":"Rote Zeilen: Bestimmt das Tier noch einmal mit dem Schlüssel.");};
+})();
+
+/* ===== M3 A3: Berlese ===== */
+(function(){
+  const svg=$("#berSvg");
+  svg.innerHTML=`<rect width="700" height="420" fill="#f6f2e8"/>
+  <line x1="350" y1="0" x2="350" y2="40" stroke="#555" stroke-width="3"/>
+  <circle id="glow" cx="350" cy="62" r="80" fill="#ffe680" opacity="0"/>
+  <path d="M310 40 h80 l15 30 h-110z" fill="#666"/><circle id="bulb" cx="350" cy="76" r="14" fill="#ddd"/>
+  <path d="M220 130 h260 l-110 160 v40 h-40 v-40z" fill="#e6eef5" stroke="#7b8b99" stroke-width="3" opacity=".8"/>
+  <line x1="230" y1="140" x2="470" y2="140" stroke="#555" stroke-width="2" stroke-dasharray="4 3"/>
+  <g id="laub"></g><g id="tiere"></g>
+  <path d="M290 340 h120 v60 q0 10 -10 10 h-100 q-10 0 -10 -10z" fill="#e8f2ff" stroke="#7b8b99" stroke-width="3"/>
+  <rect x="295" y="380" width="110" height="24" fill="#d8c8a8" opacity=".8"/>
+  <g font-size="14" fill="#333"><text x="500" y="90">Lampe</text><text x="490" y="150">Sieb mit Laubstreu</text><text x="430" y="250">Trichter</text><text x="420" y="375">Auffanggefäß (feuchtes Papier)</text></g>
+  <g id="therm"><rect x="60" y="120" width="16" height="200" rx="8" fill="#fff" stroke="#888"/><rect id="therm-f" x="63" y="280" width="10" height="37" rx="5" fill="#e34948"/><text x="40" y="345" font-size="14">Wärme oben</text></g>`;
+  const laub=svg.querySelector("#laub");const R=rnd(11);
+  for(let i=0;i<34;i++){const x=240+R()*220,y=95+R()*42;el("ellipse",{cx:x,cy:y,rx:18,ry:6,transform:`rotate(${R()*60-30} ${x} ${y})`,fill:["#c9782a","#a85f1f","#d9a441","#8f6a2a"][i%4],opacity:.95},laub);}
+  const kinds=["springschwanz","milbe","assel","springschwanz","milbe","hundertfuesser","springschwanz","milbe","spinne","springschwanz"];
+  const tg=svg.querySelector("#tiere");const T=kinds.map((k,i)=>{const g=el("g",{},tg);g.innerHTML=ANIMALS[k]();return{g,x0:250+i*21,y0:105+R()*25,x1:305+R()*85,y1:365+R()*20,d:R()*0.4};});
+  let p=0,on=false,raf=null;
+  function draw(){T.forEach(t=>{const q=clamp((p-t.d)/(1-t.d)*1.2,0,1);let x,y;if(q<0.3){x=t.x0+(Math.sin(q*40+t.d*10)*3);y=t.y0+q/0.3*30;}else{const r=(q-0.3)/0.7;const fx=t.x0+(350-t.x0)*r;x=fx+(t.x1-350)*r*r;y=t.y0+30+(t.y1-t.y0-30)*r;}t.g.setAttribute("transform",`translate(${x-21} ${y-10}) scale(.35)`);});
+    laub.setAttribute("opacity",1-p*0.35);svg.querySelector("#therm-f").setAttribute("y",280-p*120);svg.querySelector("#therm-f").setAttribute("height",37+p*120);}
+  function loop(){if(on&&p<1){p=Math.min(1,p+0.0025);draw();txt();raf=requestAnimationFrame(loop);}else raf=null;}
+  function txt(){const e=$("#berText");if(!on&&p===0)e.textContent="Die Lampe ist aus. Die Tiere sitzen im Laub.";else if(!on)e.textContent="⏸ Lampe aus. Was habt ihr bis jetzt beobachtet?";else if(p<0.35)e.textContent="💡 Die Lampe strahlt Licht und Wärme ab. Das Laub oben wird trockener …";else if(p<1)e.textContent="⬇️ Die Tiere wandern nach unten und fallen durch das Sieb …";else e.textContent="✅ Fast alle Tiere sind im Auffanggefäß gelandet. Warum sind sie geflohen?";}
+  $("#berLamp").onclick=function(){on=!on;this.textContent=on?"💡 Lampe ausschalten":"💡 Lampe einschalten";svg.querySelector("#glow").setAttribute("opacity",on?.45:0);svg.querySelector("#bulb").setAttribute("fill",on?"#fff3a0":"#ddd");txt();if(on&&!raf)loop();};
+  $("#berReset").onclick=()=>{on=false;p=0;$("#berLamp").textContent="💡 Lampe einschalten";svg.querySelector("#glow").setAttribute("opacity",0);svg.querySelector("#bulb").setAttribute("fill","#ddd");draw();txt();};
+  draw();
+})();
+
+/* ===== M4 A1: Zersetzung ===== */
+(function(){
+  const svg=$("#zerSvg");
+  svg.innerHTML=`<defs><mask id="lm"><rect width="700" height="400" fill="#fff"/><g id="holes"></g></mask></defs>
+  <rect width="700" height="250" fill="#f3efe2"/><rect y="250" width="700" height="150" fill="#6b4a2f"/>
+  <rect id="humus" y="250" width="700" height="0" fill="#3a2516"/>
+  <g id="leaf" mask="url(#lm)"><path id="lb" d="M120 170 Q200 60 360 70 Q520 80 580 170 Q520 260 360 270 Q200 280 120 170Z" fill="#c9782a" stroke="#8a4d16" stroke-width="3"/>
+   <g id="win" fill="#f2d9a2" opacity="0"></g></g>
+  <g id="veins" stroke="#7a4512" stroke-width="3" fill="none"><path d="M90 170 L585 170"/>${[160,230,300,370,440,510].map(x=>`<path d="M${x} 170 L${x+40} ${x<350?95:100}"/><path d="M${x} 170 L${x+40} ${x<350?245:240}"/>`).join("")}</g>
+  <g id="frag" opacity="0"></g><g id="crumbs" opacity="0"></g><g id="fungi" opacity="0" stroke="#fff" stroke-width="1.5" fill="none"></g><g id="minerals" opacity="0"></g>
+  <g id="sprout" opacity="0"><path d="M560 250 q0 -40 0 -70" stroke="#3f7d3a" stroke-width="5"/><path d="M560 200 q-30 -20 -45 0 q20 15 45 0" fill="#5d9a45"/><path d="M560 185 q30 -25 50 -5 q-25 18 -50 5" fill="#6fae52"/><path d="M560 250 q-15 30 -40 50 M560 250 q10 35 30 55 M560 250 v60" stroke="#e7d4ae" stroke-width="2" fill="none"/></g>
+  <g id="actors"></g>`;
+  const holes=svg.querySelector("#holes"),win=svg.querySelector("#win");const R=rnd(5);
+  const H=[];for(let i=0;i<26;i++)H.push(el("circle",{cx:160+R()*400,cy:110+R()*120,r:6+R()*16,fill:"#000",opacity:0},holes));
+  for(let i=0;i<20;i++)el("circle",{cx:160+R()*400,cy:110+R()*120,r:4+R()*6},win);
+  const frag=svg.querySelector("#frag");for(let i=0;i<14;i++)el("path",{d:`M0 0 l${10+R()*20} ${R()*10-5} l${R()*10-5} ${10+R()*10}z`,fill:"#a8642a",transform:`translate(${180+R()*340} ${180+R()*60}) rotate(${R()*360})`},frag);
+  const cr=svg.querySelector("#crumbs");for(let i=0;i<40;i++)el("circle",{cx:120+R()*460,cy:262+R()*40,r:3+R()*4,fill:"#2a1a10"},cr);
+  const fu=svg.querySelector("#fungi");for(let i=0;i<30;i++){const x=120+R()*460,y=260+R()*60;el("path",{d:`M${x} ${y} q${R()*30-15} ${R()*20} ${R()*40-20} ${R()*30}`},fu);}
+  for(let i=0;i<40;i++)el("circle",{cx:120+R()*460,cy:260+R()*60,r:2,fill:"#9fd3ff",stroke:"none"},fu);
+  const mi=svg.querySelector("#minerals");for(let i=0;i<12;i++){const x=440+R()*100,y=300+R()*60;el("circle",{cx:x,cy:y,r:6,fill:"#2a78d6",stroke:"#fff","stroke-width":2},mi);}
+  const act=svg.querySelector("#actors");
+  const STAGES=[
+    ["🍂 Phase 0: Ein frisches Buchenblatt fällt im Herbst auf den Waldboden.",[]],
+    ["🪟 Phase 1 – Fensterfraß: Springschwänze und Milben fressen die weiche Blattoberfläche. Es entstehen durchsichtige „Fenster“.",["springschwanz","milbe"]],
+    ["🕳️ Phase 2 – Lochfraß: Asseln, Schnecken und Doppelfüßer fressen Löcher ins Blatt und zerkleinern es.",["assel","schnecke","doppelfuesser"]],
+    ["🦴 Phase 3 – Skelettfraß: Nur die harten Blattadern bleiben übrig. Das Blatt zerfällt in Stücke.",["assel","doppelfuesser"]],
+    ["🪱 Phase 4: Regenwürmer ziehen die Reste in den Boden, fressen sie zusammen mit Erde und scheiden dunkle Kotkrümel aus.",["regenwurm"]],
+    ["🍄 Phase 5: Pilzfäden (weiß) und Bakterien (blau) bauen die Krümel weiter ab, bis man keine Blattreste mehr erkennt.",[]],
+    ["🌱 Phase 6: Es entsteht dunkler, fruchtbarer Humus. Dabei werden Mineralstoffe frei. Die Pflanze nimmt sie auf und bildet neue Blätter. Der Kreislauf ist geschlossen!",[]]
+  ];
+  const r=$("#zerRange");
+  function upd(){const s=+r.value;$("#zerText").textContent=STAGES[s][0];
+    win.setAttribute("opacity",s===1?0.9:(s===2?0.5:0));
+    H.forEach((h,i)=>h.setAttribute("opacity",s>=2?(i<(s===2?14:26)?1:0):0));
+    svg.querySelector("#lb").setAttribute("opacity",s>=3?0:1);
+    svg.querySelector("#veins").setAttribute("opacity",s<=2?0.6:(s===3?1:0));
+    frag.setAttribute("opacity",s===3?1:(s===4?0.5:0));
+    cr.setAttribute("opacity",s>=4&&s<6?1:0);fu.setAttribute("opacity",s===5?1:0);
+    svg.querySelector("#humus").setAttribute("height",s>=6?40:(s===5?15:0));
+    mi.setAttribute("opacity",s===6?1:0);svg.querySelector("#sprout").setAttribute("opacity",s===6?1:0);
+    act.innerHTML="";STAGES[s][1].forEach((k,i)=>{const g=el("g",{transform:`translate(${40+i*150} ${s>=4?300:15}) scale(${s>=4?1.2:1})`},act);el("rect",{x:-6,y:-4,width:132,height:68,rx:12,fill:"#fff",opacity:.85},g);const inner=el("g",{},g);inner.innerHTML=ANIMALS[k]();});
+  }
+  r.addEventListener("input",upd);upd();
+})();
+
+/* ===== M4 A2: Puzzle ===== */
+const STEPS=["Im Herbst fällt Laub auf den Waldboden.","Springschwänze und Milben fressen „Fenster“ in die Blätter.","Asseln, Schnecken und Doppelfüßer zerkleinern das Laub.","Regenwürmer ziehen Reste in den Boden und scheiden Kotkrümel aus.","Pilze und Bakterien zersetzen die Reste zu Humus und Mineralstoffen.","Bäume nehmen Mineralstoffe mit den Wurzeln auf und bilden neue Blätter."];
+let puzOrder=[],puzSel=[];
+function buildPuz(){puzOrder=STEPS.map((_,i)=>i).sort(()=>Math.random()-.5);puzSel=[];renderPuz();$("#puzFb").textContent="";}
+function renderPuz(checked){const c=$("#puz");c.innerHTML="";puzOrder.forEach(i=>{const b=document.createElement("button");const pos=puzSel.indexOf(i);b.className=(pos>=0?"sel":"")+(checked&&pos>=0?(pos===i?" ok":" no"):"");b.innerHTML='<span class="n">'+(pos>=0?pos+1:"?")+'</span>'+STEPS[i];b.onclick=()=>{if(pos>=0)puzSel.splice(pos);else puzSel.push(i);renderPuz();$("#puzFb").textContent="";};c.appendChild(b);});}
+$("#puzCheck").onclick=()=>{if(puzSel.length<6){$("#puzFb").textContent="Ordnet zuerst alle 6 Karten (antippen in der richtigen Reihenfolge).";return;}renderPuz(true);const ok=puzSel.filter((v,i)=>v===i).length;$("#puzFb").textContent=ok===6?"🎉 Perfekt! Und nach Schritt 6 geht es wieder mit Schritt 1 los: ein Kreislauf!":ok+" von 6 an der richtigen Stelle. Tippt auf eine falsche Karte, um ab dort neu zu ordnen.";};
+$("#puzReset").onclick=buildPuz;buildPuz();
+
+/* ===== Selbsttest ===== */
+const QUIZ=[
+ ["Warum gehören Pilze NICHT zu den Pflanzen?",["Sie haben kein Chlorophyll und betreiben keine Fotosynthese.","Sie sind zu klein.","Sie wachsen nur im Herbst.","Sie bestehen nicht aus Zellen."],0,"Pilze können keinen Zucker selbst herstellen. Sie ernähren sich von Stoffen anderer Lebewesen."],
+ ["Was ist der „eigentliche“ Pilz?",["der Hut","das Myzel im Boden","die Sporen","der Stiel"],1,"Das Myzel, ein Geflecht aus Hyphen im Boden, ist der eigentliche Pilz. Der Fruchtkörper ist nur ein kleiner Teil."],
+ ["Wozu dient der Fruchtkörper eines Pilzes?",["zur Fotosynthese","zum Speichern von Wasser","zur Bildung und Verbreitung von Sporen","zum Schutz vor Tieren"],2,"An den Lamellen entstehen Sporen, die vom Wind verbreitet werden."],
+ ["Was beschreibt eine Mykorrhiza?",["Ein Pilz tötet eine Baumwurzel.","Pilz und Baumwurzel leben zusammen, beide haben einen Vorteil.","Ein Pilz zersetzt tote Wurzeln.","Ein Tier frisst Pilzfäden."],1,"Der Baum liefert Zucker, der Pilz Wasser und Mineralstoffe: eine Symbiose."],
+ ["Ein Pilz lebt von einem lebenden Baum und schwächt ihn. Er ist ein …",["Zersetzer","Symbiosepartner","Parasit","Produzent"],2,"Parasiten leben auf Kosten eines lebenden Wirts und schaden ihm."],
+ ["Wovon ernähren sich Zersetzer (Saprobionten)?",["von toten organischen Stoffen wie Laub und Holz","nur von Sonnenlicht","von lebenden Tieren","von Steinen"],0,"Zersetzer bauen tote Reste von Lebewesen ab."],
+ ["Welches Streu-Tier hat 14 Beine?",["Spinne","Springschwanz","Assel","Doppelfüßer"],2,"Asseln haben 7 Beinpaare = 14 Beine. Sie sind Krebstiere, die an Land leben."],
+ ["Welches Bodentier ist ein RÄUBER und kein Zersetzer?",["Regenwurm","Hundertfüßer","Assel","Doppelfüßer"],1,"Der Hundertfüßer jagt mit Giftklauen andere Bodentiere."],
+ ["Warum fliehen die Tiere im Berlese-Trichter nach unten?",["Sie werden vom Glas angezogen.","Sie meiden Licht, Wärme und Trockenheit.","Sie suchen Futter im Glas.","Die Schwerkraft zieht sie."],1,"Bodentiere sind an dunkle, kühle und feuchte Lebensräume angepasst."],
+ ["Warum braucht die Assel einen feuchten Lebensraum?",["Sie trinkt sehr viel.","Ihre kiemenähnlichen Atmungsorgane müssen feucht bleiben.","Sie kann nur im Wasser laufen.","Sie frisst nur nasses Laub."],1,"Asseln stammen von Krebstieren ab und atmen über kiemenähnliche Organe, die nicht austrocknen dürfen."],
+ ["Im Netzbeutel-Versuch wird das Laub im grobmaschigen Beutel am schnellsten abgebaut. Was folgt daraus?",["Pilze spielen keine Rolle.","Bodentiere beschleunigen den Abbau, weil sie das Laub zerkleinern.","Laub wird nur durch Regen abgebaut.","Die feinen Beutel waren kaputt."],1,"Je mehr Tiere hineinkommen, desto schneller geht es. Pilze und Bakterien schaffen es auch allein, aber langsamer."],
+ ["Warum wächst der Waldboden nicht jedes Jahr höher?",["Der Wind weht das Laub weg.","Tiere tragen das Laub in ihre Nester.","Zersetzer bauen das Laub zu Humus und Mineralstoffen ab, die Pflanzen wieder nutzen.","Der Regen spült das Laub fort."],2,"Fall gelöst! Zersetzer schließen den Stoffkreislauf im Wald."]
+];
+function renderQuiz(){const c=$("#quiz");c.innerHTML="";let n=0,ok=0;
+  QUIZ.forEach((q,i)=>{const a=S.quiz[i];const d=document.createElement("div");d.className="quiz-q";
+    d.innerHTML="<b>"+(i+1)+". "+q[0]+"</b><div class='opts'>"+q[1].map((o,k)=>"<button class='opt"+(a!==undefined?(k===q[2]?" right":(k===a?" wrong":"")):"")+"' data-q='"+i+","+k+"' "+(a!==undefined?"disabled":"")+">"+o+"</button>").join("")+"</div><div class='fb'>"+(a!==undefined?(a===q[2]?"✅ Richtig! ":"❌ Leider falsch. ")+q[3]:"")+"</div>";
+    if(a!==undefined){n++;if(a===q[2])ok++;}c.appendChild(d);});
+  let msg="Ergebnis: "+ok+" / "+QUIZ.length+" richtig";if(n<QUIZ.length)msg+=" ("+(QUIZ.length-n)+" Fragen offen)";
+  else msg+=ok>=11?" · 🏆 Waldboden-Expert:in!":ok>=9?" · 🥈 Sehr gut, fast Profi!":ok>=6?" · 🙂 Gut! Schaut euch die falschen Fragen noch einmal an.":" · 💪 Wiederholt die Missionen und versucht es noch einmal.";
+  $("#quizScore").textContent=msg;
+  if(n===QUIZ.length){const best=S.quizBest||0;if(ok>best){S.quizBest=ok;save();if(ok>=9&&best<9)toast("🏆 Abzeichen „Waldboden-Expert:in“ freigeschaltet!");}updateProgress();}
+}
+$("#quiz").addEventListener("click",e=>{const b=e.target.closest("[data-q]");if(!b)return;const[i,k]=b.dataset.q.split(",").map(Number);S.quiz[i]=k;save();renderQuiz();});
+$("#quizReset").onclick=()=>{S.quiz={};save();renderQuiz();};
+renderQuiz();
+
+/* ===== Reset ===== */
+$("#resetAll").onclick=()=>{let ok=true;try{ok=confirm("Wirklich alle Eingaben auf diesem Gerät löschen?");}catch(e){}if(!ok)return;try{localStorage.removeItem(KEY);}catch(e){}S={done:{},ll:{},quiz:{},lw:{},id:{}};$$("#idTable select").forEach(x=>x.value="");sortState=TRAITS.map(()=>[0,0,0]);$$(".task").forEach(t=>t.classList.remove("done"));renderAllLL();renderSort();renderLW();renderQuiz();updateProgress();go("start");toast("Alle Eingaben gelöscht.");};
+
+updateProgress();
+let h0="";try{h0=(location.hash||"").slice(1);}catch(e){}
+go(h0||S.page||"start");
+window.addEventListener("hashchange",()=>go(location.hash.slice(1)));
+})();
+</script>
+</body>
+</html>
